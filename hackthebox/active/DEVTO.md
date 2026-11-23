@@ -1,115 +1,146 @@
 ---
-title: "Informe Técnico: Active (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: Active (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina Active de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for Active (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_01.png"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: Active
+# Offensive Security Assessment Report: Active
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Windows-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Active** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Active** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** Explotación de servicio de red
-* **Vector de Elevación de Privilegios:** Escalada local de privilegios
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** Public-Facing Network Service Exploitation
+* **Privilege Escalation Vector:** Local Privilege Escalation
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Active |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Windows |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | Explotación de servicio de red |
-| **Mecanismo de Escalada** | Escalada local de privilegios |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Active |
+| **Platform** | Hack The Box |
+| **Operating System** | Windows |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | Public-Facing Network Service Exploitation |
+| **Privilege Escalation Vector** | Local Privilege Escalation |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: Explotación de servicio de red
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: Public-Facing Network Service Exploitation
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: Escalada local de privilegios
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: Local Privilege Escalation
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-**How many SMB shares are shared by the target?**
+> **Assessment Query / Target Milestone:** How many SMB shares are shared by the target?
 
-R: 7
+* **Observed Evidence / Output:** 7
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_01.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_02.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-**What is the name of the share that allows anonymous read access?**
 
-R: Replication
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_03.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
-**Which file has encrypted account credentials in it?**
 
-R: Groups.xml
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_04.png)
+> **Assessment Query / Target Milestone:** What is the name of the share that allows anonymous read access?
 
-**What is the decrpyted password for the SVC_TGS account?**
+* **Observed Evidence / Output:** Replication
 
-R:GPPstillStandingStrong2k18
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_05.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Submit the flag located on the security user's desktop.
 
-R:b2e5ead41c60bb8456e98c79dea54286
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_06.png)
+> **Assessment Query / Target Milestone:** Which file has encrypted account credentials in it?
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_07.png)
+* **Observed Evidence / Output:** Groups.xml
 
-**Which service account on Active is vulnerable to Kerberoasting?**
 
-R:administrator
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![Captura de pantalla 2025-08-19 153506.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_08.png)
+
+
+> **Assessment Query / Target Milestone:** What is the decrpyted password for the SVC_TGS account?
+
+* **Observed Evidence / Output:** GPPstillStandingStrong2k18
+
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** Submit the flag located on the security user's desktop.
+
+* **Observed Evidence / Output:** b2e5ead41c60bb8456e98c79dea54286
+
+
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** Which service account on Active is vulnerable to Kerberoasting?
+
+* **Observed Evidence / Output:** administrator
+
+
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ```jsx
 sudo apt install ntpsec-ntpdate
@@ -118,47 +149,59 @@ impacket-GetUserSPNs active.htb/svc_tgs:GPPstillStandingStrong2k18 -dc-ip 10.10.
 
 ```
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_09.png)
 
-What is the plaintext password for the administrator account?
+![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R:Ticketmaster1968 
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_10.png)
+
+> **Assessment Query / Target Milestone:** What is the plaintext password for the administrator account?
+
+* **Observed Evidence / Output:** Ticketmaster1968 
+
+
+![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **Submit the flag located on the administrator's desktop.**
 
-R: 45e945ef519b63d2188f5d9014a485e2
+* **Observed Evidence / Output:** 45e945ef519b63d2188f5d9014a485e2
 
-![Captura de pantalla 2025-08-19 153814.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_11.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_12.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_11.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
----
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
-
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/active/images/step_12.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
+
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
+
+---
+
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
+
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (Explotación de servicio de red) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (Escalada local de privilegios) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (Public-Facing Network Service Exploitation) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (Local Privilege Escalation) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

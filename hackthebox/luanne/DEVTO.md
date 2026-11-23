@@ -1,154 +1,184 @@
 ---
-title: "Informe Técnico: Luanne (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: Luanne (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina Luanne de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for Luanne (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_01.png"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: Luanne
+# Offensive Security Assessment Report: Luanne
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Luanne** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Luanne** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** Lua Code Injection (weather.lua)
-* **Vector de Elevación de Privilegios:** doas + encrypted backup password
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** Lua Code Injection (weather.lua)
+* **Privilege Escalation Vector:** doas + encrypted backup password
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Luanne |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | Lua Code Injection (weather.lua) |
-| **Mecanismo de Escalada** | doas + encrypted backup password |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Luanne |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | Lua Code Injection (weather.lua) |
+| **Privilege Escalation Vector** | doas + encrypted backup password |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: Lua Code Injection (weather.lua)
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: Lua Code Injection (weather.lua)
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: doas + encrypted backup password
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: doas + encrypted backup password
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
-
-CVE(s): N/A
-GTFOBins/Abusos (sudo/SUID): N/A
-Initial Access Exploit (Ingreso): Lua Code Injection (weather.lua)
-
-Privilege Escalation (Escalada): doas + encrypted backup password
-
-
-
-| Campo | Detalle |
-| --- | --- |
-| Nombre | Luanne |
-| OS | NetBSD |
-| Dificultad | Easy |
-| CVE | N/A |
-| Acceso Inicial | Lua Code Injection (weather.lua) |
-| Escalada | doas + password from encrypted backup |
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
 ---
 
-## Reconocimiento
+### Phase 1: Reconnaissance & Port Scanning
 
 El escaneo revela 3 puertos TCP abiertos: 22 (SSH), 80 (Nginx/bozohttpd) y 9001 (Medusa/Supervisor).
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_01.png)
 
-## Enumeracion
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-En el puerto 9001 corre **Supervisor Process Manager**, accesible con credenciales por defecto `user:123`. Desde el panel se observan dos instancias de bozohttpd: produccion (puerto 3000) y desarrollo (puerto 3001).
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_02.png)
+### Phase 2: Vulnerability Analysis & Attack Surface Mapping
 
-Las credenciales por defecto de Supervisor son `user:123`.
+En el puerto 9001 corre **Supervisor Process Manager**, accesible con default credentials `user:123`. Desde el panel se observan dos instancias de bozohttpd: produccion (puerto 3000) y desarrollo (puerto 3001).
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_03.png)
+
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
+
+Las default credentials de Supervisor son `user:123`.
+
+
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 En el puerto 80, la ruta `/weather` ejecuta un script Lua llamado **weather.lua** a traves del proceso httpd.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_04.png)
 
-## Explotacion
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Fuzzing revela que `/weather/forecast` devuelve HTTP 200. El parametro **city** es vulnerable a **Lua Code Injection**.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_05.png)
+### Phase 3: Exploitation & Initial Foothold
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_06.png)
+Fuzzing revela que `/weather/forecast` devuelve HTTP 200. El parametro **city** es vulnerable to **Lua Code Injection**.
+
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 Inyectando `os.execute()` en el parametro city, se obtiene ejecucion de comandos y una reverse shell como `_httpd`.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_07.png)
+
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ## Movimiento Lateral
 
 En `.htpasswd` se encuentra el hash de **webapi_user**, que se crackea con john obteniendo: **iamthebest**.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_08.png)
 
-![Captura de pantalla 2025-08-12 185009.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_09.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_10.png)
+
+
+![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 El flag `-u` de bozohttpd expone los home directories de los usuarios. Accediendo al servidor de desarrollo (puerto 3001) con las credenciales de webapi_user, se accede a `/~r.michaels/` y se obtiene su clave privada SSH.
 
-### User Flag (r.michaels)
+#### User Proof Flag Verification
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_11.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_12.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_11.png)
+* **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_13.png)
 
-## Escalada de Privilegios
+
+![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_12.png)
+* **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_13.png)
+* **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+### Phase 4: Local Privilege Escalation & Host Dominance
 
 En el home de r.michaels hay un backup encriptado. Se descifra con **netpgp** (herramienta de NetBSD equivalente a gpg).
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_14.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_15.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_14.png)
+* **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_15.png)
+* **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 Dentro del backup, el `.htpasswd` contiene un hash diferente que se crackea obteniendo: **littlebear**.
 
@@ -166,13 +196,19 @@ netpgp --decrypt --output=devel_backup-2020-09-16.tar.gz devel_backup-2020-09-16
 tar xvzf devel_backup-2020-09-16.tar.gz
 ```
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_16.png)
+
+![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_16.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
 
 En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels ejecutar comandos como root. Usando `doas -u root sh` con la contrasena `littlebear`, se obtiene shell como root.
 
-### Root Flag
+#### Root / System Proof Flag Verification
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_17.png)
+
+![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/luanne/images/step_17.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
+
 
 > 
 > 
@@ -202,7 +238,7 @@ En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels 
 > 
 > ### **2️⃣ Acceso a Supervisor**
 > 
-> Buscar credenciales por defecto en Google → `user:123`.
+> Buscar default credentials en Google → `user:123`.
 > 
 > ```bash
 > bash
@@ -291,7 +327,7 @@ En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels 
 > CopiarEditar
 > echo "webapi_user:\$1\$vVoNCsOl\$lMtBS6GL2upDbR4Owhzyc0" > hash
 > john --wordlist=/usr/share/wordlists/rockyou.txt hash
-> # Resultado: iamthebest
+> # Scan Outcome: iamthebest
 > 
 > ```
 > 
@@ -388,7 +424,7 @@ En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels 
 > CopiarEditar
 > echo "webapi_user:\$1\$6xc7I/LW\$WuSQCS6n3yXsjPMSmwHDu." > hash
 > john --wordlist=/usr/share/wordlists/rockyou.txt hash
-> # Resultado: littlebear
+> # Scan Outcome: littlebear
 > 
 > ```
 > 
@@ -429,7 +465,7 @@ En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels 
 > 
 > ### 📌 Claves del proceso
 > 
-> - **Supervisor credenciales por defecto** → visibilidad de procesos internos.
+> - **Supervisor default credentials** → visibilidad de procesos internos.
 > - **bozohttpd + Lua vulnerable** → RCE.
 > - **Flag `u`** en bozohttpd → exposición de home público y `id_rsa`.
 > - **netpgp** usado en lugar de gpg para descifrar backup.
@@ -437,29 +473,29 @@ En NetBSD no hay `sudo`, se usa **doas**. La configuracion permite a r.michaels 
 
 ---
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (Lua Code Injection (weather.lua)) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (doas + encrypted backup password) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (Lua Code Injection (weather.lua)) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (doas + encrypted backup password) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

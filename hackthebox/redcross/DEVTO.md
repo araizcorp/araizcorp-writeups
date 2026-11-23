@@ -1,189 +1,270 @@
 ---
-title: "Informe Técnico: RedCross (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: RedCross (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina RedCross de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for RedCross (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_01.png"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: RedCross
+# Offensive Security Assessment Report: RedCross
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **RedCross** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **RedCross** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** CMS/plugin vulnerable (upload)
-* **Vector de Elevación de Privilegios:** debugfs
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** CMS/plugin vulnerable (upload)
+* **Privilege Escalation Vector:** debugfs
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | RedCross |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Medium |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | CMS/plugin vulnerable (upload) |
-| **Mecanismo de Escalada** | debugfs |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | RedCross |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Medium |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | CMS/plugin vulnerable (upload) |
+| **Privilege Escalation Vector** | debugfs |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: CMS/plugin vulnerable (upload)
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: CMS/plugin vulnerable (upload)
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: debugfs
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: debugfs
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-Initial Access Exploit (Ingreso): CMS/plugin vulnerable (upload)
+> **Assessment Query / Target Milestone:** How many open TCP ports are listening on RedCross?
 
-Privilege Escalation (Escalada): debugfs
+* **Observed Evidence / Output:** 3
 
-**How many open TCP ports are listening on RedCross?**
 
-R: 3
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_01.png)
 
-**What is the relative path of the PDF file on the webserver?**
 
-R: /documentation/account-signup.pdf
+> **Assessment Query / Target Milestone:** What is the relative path of the PDF file on the webserver?
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_02.png)
+* **Observed Evidence / Output:** /documentation/account-signup.pdf
+
+
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
 
 **When following the instructions to request access, what password is returned for the guest user?**
 
-R: guest
+* **Observed Evidence / Output:** guest
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_03.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_04.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_05.png)
 
-**What HTTP GET parameter is vulnerable to SQL injection?**
 
-R: O
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_06.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_07.png)
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What HTTP GET parameter is vulnerable to SQL injection?
+
+* **Observed Evidence / Output:** O
+
+
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ```jsx
 sqlmap -r req -v3 --delay=1 --batch --dump D redcross -T users
 ```
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_08.png)
 
-**What is the charles user's password?**
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R: cookiemonster
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_09.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_10.png)
+> **Assessment Query / Target Milestone:** What is the charles user's password?
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_11.png)
+* **Observed Evidence / Output:** cookiemonster
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_12.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_13.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**What other subdomain of redcross.htb returns a different site?**
 
-R: admin.redcross.htb
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_14.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_11.png)
+* **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_12.png)
+* **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_13.png)
+* **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What other subdomain of redcross.htb returns a different site?
+
+* **Observed Evidence / Output:** admin.redcross.htb
+
+
+![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_14.png)
+* **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **There are two options in the IT Admin panel. One is "User Management". What is the other?**
 
-R: Network Access
+* **Observed Evidence / Output:** Network Access
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_15.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_16.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_15.png)
+* **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_16.png)
+* **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **Once the firewall is lifted, what port serves an email-related service?**
 
-R: 1025
+* **Observed Evidence / Output:** 1025
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_17.png)
 
-What is the name and version of the SMTP server running on RedCross?
+![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_17.png)
+* **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R:  Haraka 2.8.8
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_18.png)
 
-**What user is the Haraka mail server running as?**
+> **Assessment Query / Target Milestone:** What is the name and version of the SMTP server running on RedCross?
 
-R: penelope
+* **Observed Evidence / Output:** Haraka 2.8.8
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_19.png)
+
+![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_18.png)
+* **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What user is the Haraka mail server running as?
+
+* **Observed Evidence / Output:** penelope
+
+
+![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_19.png)
+* **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **Submit the flag located in the penelope user's home directory.**
 
-R: b471c7417317a76f1583273801e3df03
+* **Observed Evidence / Output:** b471c7417317a76f1583273801e3df03
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_20.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_21.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_20.png)
+* **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**What is the password for the unixusrmgr user in the PostgreSQL database?**
 
-R: dheu%7wjx8B&
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_22.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_21.png)
+* **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**What table in the database contains information about temporary users created by the website?**
 
-R: passwd_table
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_23.png)
+> **Assessment Query / Target Milestone:** What is the password for the unixusrmgr user in the PostgreSQL database?
+
+* **Observed Evidence / Output:** dheu%7wjx8B&
+
+
+![step_22.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_22.png)
+* **Assessment Step 22:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What table in the database contains information about temporary users created by the website?
+
+* **Observed Evidence / Output:** passwd_table
+
+
+![step_23.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_23.png)
+* **Assessment Step 23:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **Submit the flag located in the root user's home directory.**
 
-R: 800d55a83e0aaab0fd5547542e71a4d5
+* **Observed Evidence / Output:** 800d55a83e0aaab0fd5547542e71a4d5
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_24.png)
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_25.png)
+![step_24.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_24.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
+
+
+![step_25.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/redcross/images/step_25.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
+
 
 > 
 > 
@@ -235,29 +316,29 @@ R: 800d55a83e0aaab0fd5547542e71a4d5
 
 ---
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (CMS/plugin vulnerable (upload)) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (debugfs) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (CMS/plugin vulnerable (upload)) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (debugfs) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

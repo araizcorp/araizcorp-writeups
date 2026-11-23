@@ -1,83 +1,77 @@
 ---
-title: "Informe Técnico: Mirai (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: Mirai (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina Mirai de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for Mirai (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_01.png"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: Mirai
+# Offensive Security Assessment Report: Mirai
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Mirai** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Mirai** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** Default Raspberry Pi Credentials (pi:raspberry) via SSH
-* **Vector de Elevación de Privilegios:** sudo ALL (NOPASSWD) + USB forensics for root flag
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** Default Raspberry Pi Credentials (pi:raspberry) via SSH
+* **Privilege Escalation Vector:** sudo ALL (NOPASSWD) + USB forensics for root flag
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Mirai |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | Default Raspberry Pi Credentials (pi:raspberry) via SSH |
-| **Mecanismo de Escalada** | sudo ALL (NOPASSWD) + USB forensics for root flag |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Mirai |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | Default Raspberry Pi Credentials (pi:raspberry) via SSH |
+| **Privilege Escalation Vector** | sudo ALL (NOPASSWD) + USB forensics for root flag |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: Default Raspberry Pi Credentials (pi:raspberry) via SSH
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: Default Raspberry Pi Credentials (pi:raspberry) via SSH
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: sudo ALL (NOPASSWD) + USB forensics for root flag
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: sudo ALL (NOPASSWD) + USB forensics for root flag
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
-
-CVE(s): N/A
-GTFOBins/Abusos (sudo/SUID): sudo (ALL commands)
-Initial Access Exploit (Ingreso): Default Raspberry Pi Credentials (pi:raspberry) via SSH
-
-Privilege Escalation (Escalada): sudo ALL (NOPASSWD) + USB forensics for root flag
-
-
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
 | Field | Detail |
 | --- | --- |
@@ -96,17 +90,26 @@ An Nmap scan reveals several open ports including SSH (22), DNS (53 -- dnsmasq),
 
 The Pi-hole admin dashboard is accessible at `/admin`.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_01.png)
+
+![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
+
 
 ## Enumeration
 
 The `X-Pi-hole` header in the HTTP response confirms this is a Raspberry Pi device. Pi-hole is a widely used DNS-level ad blocker typically deployed on Raspberry Pi hardware.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_02.png)
+
+![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
 
 The Pi-hole web dashboard is found at `/admin`, providing full visibility into DNS queries and configuration.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_03.png)
+
+![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ## Exploitation
 
@@ -114,63 +117,83 @@ Raspberry Pi devices ship with well-known default credentials: `pi:raspberry`. S
 
 The Mirai botnet (after which this machine is named) famously exploited exactly this type of default credential vulnerability to compromise hundreds of thousands of IoT devices.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_04.png)
 
-## Flags
+![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-### User Flag (pi)
 
-![Captura de pantalla 2025-08-06 141447.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_05.png)
+### Phase 5: Proof of Compromise & Flag Capture
+
+#### User Proof Flag Verification
+
+
+![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ## Privilege Escalation
 
 Running `sudo -l` shows that the `pi` user can execute any command as root without a password (`(ALL : ALL) ALL` with NOPASSWD). This is the default sudo configuration on Raspberry Pi OS. Running `sudo su` grants an immediate root shell.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_06.png)
 
-### Root Flag Recovery
+![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+#### Root / System Proof Flag Verification
 
 The `root.txt` file in `/root/` contains a message stating the real flag was moved to a USB stick. The USB device is mounted at `/media/usbstick`, but the flag file has been deleted from the filesystem.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_07.png)
+
+![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 The raw USB device is `/dev/sdb`. Since deleted files are not immediately overwritten on disk, the flag can be recovered by reading the raw device data.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_08.png)
+
+![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 Using `strings /dev/sdb` or `cat /dev/sdb` reveals the deleted root flag still present in the raw disk data. This demonstrates a fundamental forensics concept: deleting a file only removes the filesystem reference, not the actual data on disk.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_09.png)
 
-### Root Flag (recovered from USB raw device)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_09.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
-![image.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_10.png)
 
----
+#### Root / System Proof Flag Verification
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
-
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_10.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
+
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
+
+---
+
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
+
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (Default Raspberry Pi Credentials (pi:raspberry) via SSH) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (sudo ALL (NOPASSWD) + USB forensics for root flag) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (Default Raspberry Pi Credentials (pi:raspberry) via SSH) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (sudo ALL (NOPASSWD) + USB forensics for root flag) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

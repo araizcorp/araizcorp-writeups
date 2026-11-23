@@ -1,187 +1,234 @@
-# Informe Técnico de Seguridad Ofensiva: OpenAdmin
+# Offensive Security Assessment Report: OpenAdmin
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **OpenAdmin** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **OpenAdmin** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** OpenNetAdmin 18.1.1 RCE
-* **Vector de Elevación de Privilegios:** sudo nano (GTFOBins)
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** OpenNetAdmin 18.1.1 RCE
+* **Privilege Escalation Vector:** sudo nano (GTFOBins)
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | OpenAdmin |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux |
-| **Nivel de Dificultad** | Easy |
-| **CVE(s) Involucrados** | CVE-2019-43818 |
-| **Vector de Entrada** | OpenNetAdmin 18.1.1 RCE |
-| **Mecanismo de Escalada** | sudo nano (GTFOBins) |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | OpenAdmin |
+| **Platform** | Hack The Box |
+| **Operating System** | Linux |
+| **Difficulty Rating** | Easy |
+| **Associated CVE(s)** | CVE-2019-43818 |
+| **Initial Foothold Vector** | OpenNetAdmin 18.1.1 RCE |
+| **Privilege Escalation Vector** | sudo nano (GTFOBins) |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: OpenNetAdmin 18.1.1 RCE
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: OpenNetAdmin 18.1.1 RCE
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: sudo nano (GTFOBins)
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: sudo nano (GTFOBins)
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
-
-CVE(s): CVE-2019-43818
-GTFOBins/Abusos (sudo/SUID): nano
-Initial Access Exploit (Ingreso): OpenNetAdmin 18.1.1 RCE
-
-Privilege Escalation (Escalada): sudo nano (GTFOBins)
-
-
-
-| Campo | Detalle |
-| --- | --- |
-| Nombre | OpenAdmin |
-| OS | Linux (Ubuntu) |
-| Dificultad | Easy |
-| CVE | CVE-2019-43818 |
-| Acceso Inicial | OpenNetAdmin 18.1.1 RCE |
-| Escalada | sudo nano (GTFOBins) |
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
 ---
 
-## Reconocimiento
+### Phase 1: Reconnaissance & Port Scanning
 
 El escaneo de puertos revela un servidor web Apache con tres directorios principales: `/artwork`, `/sierra` y `/music`.
 
-![Captura de pantalla 2025-08-10 200040.png](./images/step_01.png)
 
-![image.png](./images/step_02.png)
+![step_01.png](./images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
-## Enumeracion
+
+
+![step_02.png](./images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
+
+### Phase 2: Vulnerability Analysis & Attack Surface Mapping
 
 Navegando a `/music`, se encuentra un enlace que apunta a `/ona`, una instancia de **OpenNetAdmin** (ONA), una herramienta de administracion de red.
 
-![image.png](./images/step_04.png)
 
-La version de OpenNetAdmin que corre en la maquina es **18.1.1**, la cual es vulnerable a Remote Code Execution (CVE-2019-43818).
+![step_04.png](./images/step_04.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](./images/step_04.png)
 
-## Explotacion
+La version de OpenNetAdmin que corre en la maquina es **18.1.1**, la cual es vulnerable to Remote Code Execution (CVE-2019-43818).
+
+
+![step_04.png](./images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+### Phase 3: Exploitation & Initial Foothold
 
 Se explota la vulnerabilidad RCE en OpenNetAdmin 18.1.1 para obtener ejecucion de comandos como el usuario **www-data**.
 
-![image.png](./images/step_05.png)
 
-![image.png](./images/step_06.png)
+![step_05.png](./images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](./images/step_07.png)
 
-![image.png](./images/step_08.png)
+
+![step_06.png](./images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_07.png](./images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_08.png](./images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 ## Movimiento Lateral
 
 Revisando los archivos de configuracion de ONA, se encuentra la contrasena de la base de datos que resulta ser reutilizada por el usuario **jimmy**: `n1nj4W4rri0R!`. Se accede al sistema via SSH como jimmy.
 
-![image.png](./images/step_09.png)
 
-![image.png](./images/step_10.png)
+![step_09.png](./images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_10.png](./images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 Enumerando la configuracion de Apache, se descubre un virtual host interno llamado **internal.openadmin.htb** que corre bajo el usuario **joanna** en un puerto local.
 
-![image.png](./images/step_11.png)
+
+![step_11.png](./images/step_11.png)
+* **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 Accediendo al vhost interno mediante port forwarding, se encuentra una pagina que revela la clave privada SSH de joanna.
 
-![image.png](./images/step_12.png)
 
-![image.png](./images/step_13.png)
+![step_12.png](./images/step_12.png)
+* **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_13.png](./images/step_13.png)
+* **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 La clave privada esta protegida con passphrase. Se extrae el hash con ssh2john y se crackea con john, obteniendo la passphrase: **bloodninjas**. Con esto se accede por SSH como joanna.
 
-![image.png](./images/step_14.png)
 
-![image.png](./images/step_15.png)
+![step_14.png](./images/step_14.png)
+* **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-## Flags
 
-### User Flag (joanna)
 
-![image.png](./images/step_16.png)
+![step_15.png](./images/step_15.png)
+* **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-## Escalada de Privilegios
+
+### Phase 5: Proof of Compromise & Flag Capture
+
+#### User Proof Flag Verification
+
+
+![step_16.png](./images/step_16.png)
+* **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+### Phase 4: Local Privilege Escalation & Host Dominance
 
 Ejecutando `sudo -l`, se descubre que joanna puede ejecutar **nano** como root sobre `/opt/priv`. Siguiendo la tecnica de GTFOBins para nano, se obtiene una shell como root ejecutando comandos desde dentro del editor.
 
-![image.png](./images/step_17.png)
 
-### Root Flag
+![step_17.png](./images/step_17.png)
+* **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](./images/step_18.png)
 
-![image.png](./images/step_19.png)
+#### Root / System Proof Flag Verification
 
-![image.png](./images/step_20.png)
 
-![image.png](./images/step_21.png)
+![step_18.png](./images/step_18.png)
+* **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_19.png](./images/step_19.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
+
+
+![step_20.png](./images/step_20.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
+
+
+
+![step_21.png](./images/step_21.png)
+* **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 ---
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (CVE-2019-43818).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (CVE-2019-43818).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (OpenNetAdmin 18.1.1 RCE) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (sudo nano (GTFOBins)) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (OpenNetAdmin 18.1.1 RCE) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (sudo nano (GTFOBins)) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.

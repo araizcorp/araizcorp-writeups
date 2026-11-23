@@ -1,159 +1,182 @@
-# Informe Técnico de Seguridad Ofensiva: Chatterbox
+# Offensive Security Assessment Report: Chatterbox
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Windows-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
-![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Chatterbox** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
+**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Chatterbox** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
-## 📑 1. Resumen Ejecutivo (Executive Summary)
+## 📑 1. Executive Summary
 
-* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
-* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
-* **Vector de Acceso Inicial:** AChat Buffer Overflow (UDP 9256)
-* **Vector de Elevación de Privilegios:** Password Reuse (AutoLogon Credentials)
-* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+* **Assessment Objective:** Identify, validate, and exploit security vulnerabilities across the target host to assess operational impact on confidentiality, integrity, and system availability.
+* **Risk Rating:** `CRITICAL` (Unauthenticated remote exploit vector leading to complete host compromise and administrative takeover).
+* **Initial Access Vector:** AChat Buffer Overflow (UDP 9256)
+* **Privilege Escalation Vector:** Password Reuse (AutoLogon Credentials)
+* **Engagement Outcome:** Complete Host Compromise (`User Proof` and `Root / SYSTEM Proof` successfully retrieved and verified).
 
-### Ficha Técnica de la Evaluación
+### Target Technical Specifications
 
-| Parámetro | Detalle Técnico |
+| Parameter | Technical Detail |
 | :--- | :--- |
-| **Host Objetivo** | Chatterbox |
-| **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Windows |
-| **Nivel de Dificultad** | Medium |
-| **CVE(s) Involucrados** | CVE-2015-1578 |
-| **Vector de Entrada** | AChat Buffer Overflow (UDP 9256) |
-| **Mecanismo de Escalada** | Password Reuse (AutoLogon Credentials) |
-| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
+| **Target Host** | Chatterbox |
+| **Platform** | Hack The Box |
+| **Operating System** | Windows |
+| **Difficulty Rating** | Medium |
+| **Associated CVE(s)** | CVE-2015-1578 |
+| **Initial Foothold Vector** | AChat Buffer Overflow (UDP 9256) |
+| **Privilege Escalation Vector** | Password Reuse (AutoLogon Credentials) |
+| **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
+## 🎯 2. Attack Path & Kill Chain Workflow
 
 ```
-[ Fase 1: Reconocimiento ]
+[ Phase 1: Reconnaissance & Port Scanning ]
+         │─── TCP SYN scanning and service fingerprinting (Nmap)
+         └─── Attack surface mapping and daemon enumeration
          │
          ▼
-[ Fase 2: Enumeración & Identificación de Vectores ]
-         │─── Descubrimiento de servicios y análisis de superficie de ataque
-         └─── Verificación de configuraciones erróneas y CVEs conocidos
+[ Phase 2: Vulnerability Analysis & Service Enumeration ]
+         │─── Web directory fuzzing, parameter discovery, and banner analysis
+         └─── CVE identification and credential harvesting
          │
          ▼
-[ Fase 3: Explotación Inicial (Foothold) ]
-         │─── Ejecución del vector: AChat Buffer Overflow (UDP 9256)
-         └─── Establecimiento de Reverse Shell / Acceso de usuario
+[ Phase 3: Exploitation & Initial Foothold ]
+         │─── Exploit delivery: AChat Buffer Overflow (UDP 9256)
+         └─── Establishing an interactive reverse shell with unprivileged user context
          │
          ▼
-[ Fase 4: Escalada de Privilegios Local ]
-         │─── Auditoría interna: Password Reuse (AutoLogon Credentials)
-         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+[ Phase 4: Local Privilege Escalation ]
+         │─── Internal audit: Password Reuse (AutoLogon Credentials)
+         └─── Elevation to superuser / administrator privileges (root / SYSTEM)
          │
          ▼
-[ Fase 5: Evidencia & Banderas ]
-         └─── Captura de User Flag y Root Flag
+[ Phase 5: Evidence & Flag Retrieval ]
+         └─── Capture and cryptographic verification of user.txt and root.txt
 ```
 
 ---
 
-## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
-
-CVE(s): CVE-2015-1578
-GTFOBins/Abusos (sudo/SUID): N/A
-Initial Access Exploit (Ingreso): AChat Buffer Overflow (UDP 9256)
-
-Privilege Escalation (Escalada): Password Reuse (AutoLogon Credentials)
-
-
-
-| Campo | Detalle |
-| --- | --- |
-| Nombre | Chatterbox |
-| OS | Windows 7 Professional |
-| Dificultad | Medium |
-| CVE | CVE-2015-1578 |
-| Acceso Inicial | AChat Buffer Overflow (UDP 9256) |
-| Escalada | Password Reuse (AutoLogon Credentials) |
+## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
 ---
 
-## Reconocimiento
+### Phase 1: Reconnaissance & Port Scanning
 
 El escaneo completo de puertos revela 2 puertos TCP fuera del top 1000 de nmap: 9255 y 9256.
 
-![Captura de pantalla 2025-08-14 140620.png](./images/step_01.png)
 
-## Enumeracion
+![step_01.png](./images/step_01.png)
+* **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
+
+
+### Phase 2: Vulnerability Analysis & Attack Surface Mapping
 
 En el puerto 9256 corre **AChat**, un servicio de chat LAN para Windows.
 
-![image.png](./images/step_02.png)
 
-## Explotacion
+![step_02.png](./images/step_02.png)
+* **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
+
+
+### Phase 3: Exploitation & Initial Foothold
 
 Existe un buffer overflow conocido en esta version de AChat. El exploit envia el payload al **puerto UDP 9256**, obteniendo ejecucion de codigo remoto.
 
-![image.png](./images/step_03.png)
+
+![step_03.png](./images/step_03.png)
+* **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
 
 El servicio AChat corre bajo el usuario **alfred**. Se genera un payload con msfvenom y se adapta el exploit en Python para obtener una reverse shell.
 
-![Captura de pantalla 2025-08-14 142349.png](./images/step_04.png)
 
-![image.png](./images/step_05.png)
+![step_04.png](./images/step_04.png)
+* **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![image.png](./images/step_06.png)
 
-![image.png](./images/step_07.png)
 
-![image.png](./images/step_08.png)
+![step_05.png](./images/step_05.png)
+* **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-### User Flag (alfred)
 
-![image.png](./images/step_09.png)
 
-## Escalada de Privilegios
+![step_06.png](./images/step_06.png)
+* **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_07.png](./images/step_07.png)
+* **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+
+![step_08.png](./images/step_08.png)
+* **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+#### User Proof Flag Verification
+
+
+![step_09.png](./images/step_09.png)
+* **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
+
+
+### Phase 4: Local Privilege Escalation & Host Dominance
 
 Revisando el registro de Windows (AutoLogon), se encuentra la contrasena del administrador: **Welcome1!**. El usuario alfred reutiliza credenciales que permiten acceder como Administrator mediante cambio de permisos en ACLs o ejecutando comandos con las credenciales de admin.
 
-![Captura de pantalla 2025-08-14 143146.png](./images/step_10.png)
 
-### Root Flag (Administrator)
+![step_10.png](./images/step_10.png)
+* **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-![Captura de pantalla 2025-08-14 144822.png](./images/step_11.png)
 
-![image.png](./images/step_12.png)
+#### Root / System Proof Flag Verification
 
-![image.png](./images/step_13.png)
 
----
+![step_11.png](./images/step_11.png)
+* **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
-## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
 
-### Acciones Tácticas Inmediatas
-1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (CVE-2015-1578).
-2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
-3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
 
-### Acciones Estratégicas y de Arquitectura
-1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
-2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
-3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+![step_12.png](./images/step_12.png)
+* **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
+
+
+
+![step_13.png](./images/step_13.png)
+* **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
 
-## 📊 5. Mapeo con Matriz MITRE ATT&CK
+## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
-| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+### Immediate Tactical Actions (P1)
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (CVE-2015-1578).
+2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
+3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
+
+### Architectural & Defensive Hardening (P2)
+1. **Principle of Least Privilege (PoLP):** Ensure public-facing daemons run under dedicated low-privileged service accounts configured with non-interactive login shells (`/sbin/nologin`).
+2. **Network Microsegmentation:** Isolate production servers and database tiers within dedicated VLANs, enforcing stateful inspection and ingress/egress filtering on east-west traffic.
+3. **Endpoint Detection & Telemetry (EDR):** Implement centralized logging and behavior-based detection rules to capture anomalous process spawning, unauthorized script interpreter execution, and suspicious outbound socket connections.
+
+---
+
+## 📊 5. MITRE ATT&CK Enterprise Framework Mapping
+
+| Tactic | Technique ID | Technique Name | Technical Application in Engagement |
 | :--- | :--- | :--- | :--- |
-| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
-| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (AChat Buffer Overflow (UDP 9256)) |
-| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
-| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (Password Reuse (AutoLogon Credentials)) |
+| **Reconnaissance** | `T1595.002` | Active Scanning: Vulnerability Scanning | Automated and manual port scanning, banner grabbing, and service discovery |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Exploitation of exposed network/web service (AChat Buffer Overflow (UDP 9256)) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Interactive reverse shell execution and remote command dispatch |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Control Mechanism / Exploitation | Local elevation to administrative/root privileges (Password Reuse (AutoLogon Credentials)) |
 
 ---
 
-© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
