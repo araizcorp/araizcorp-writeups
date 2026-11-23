@@ -3,7 +3,7 @@
 ![Security Assessment](https://img.shields.io/badge/Security%20Assessment-Enterprise%20OffSec%20Standard-red?style=for-the-badge)
 ![Certifications](https://img.shields.io/badge/OffSec%20Portfolio-OSCP%20%7C%20OSEP%20%7C%20OSWE-blue?style=for-the-badge)
 ![Assessor](https://img.shields.io/badge/Lead%20Assessor-Pedro%20Araiz%20(araizcorp)-informational?style=for-the-badge)
-![Total Audited Targets](https://img.shields.io/badge/Total%20Audited%20Targets-142%20Systems-brightgreen?style=for-the-badge)
+![Total Audited Targets](https://img.shields.io/badge/Total%20Audited%20Targets-143%20Systems-brightgreen?style=for-the-badge)
 
 Central repository and offensive security assessment portfolio for **araizcorp**, specialized in **enterprise penetration testing, advanced red teaming, and OffSec certification enablement (OSCP, OSEP, OSWE)**.
 
@@ -17,7 +17,7 @@ Every assessment deliverable within this portfolio follows international penetra
 
 ---
 
-## 🟢 Hack The Box Assessment Reports (110 Target Environments)
+## 🟢 Hack The Box Assessment Reports (111 Target Environments)
 
 | # | Target System | Platform | Risk Level | Evidence Assets | Deliverable Link |
 | :-: | :--- | :-: | :-: | :-: | :-: |
@@ -95,42 +95,43 @@ Every assessment deliverable within this portfolio follows international penetra
 | 072 | [Ophiuchi](./hackthebox/ophiuchi/README.md) | Hack The Box | Easy / Medium / Hard | 12 Evidences | [Read Assessment](./hackthebox/ophiuchi/) |
 | 073 | [Optimum](./hackthebox/optimum/README.md) | Hack The Box | Easy / Medium / Hard | 8 Evidences | [Read Assessment](./hackthebox/optimum/) |
 | 074 | [Passage](./hackthebox/passage/README.md) | Hack The Box | Easy / Medium / Hard | 18 Evidences | [Read Assessment](./hackthebox/passage/) |
-| 075 | [Pit](./hackthebox/pit/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/pit/) |
-| 076 | [Poison](./hackthebox/poison/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/poison/) |
-| 077 | [Popcorn](./hackthebox/popcorn/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/popcorn/) |
-| 078 | [Postman](./hackthebox/postman/README.md) | Hack The Box | Easy / Medium / Hard | 13 Evidences | [Read Assessment](./hackthebox/postman/) |
-| 079 | [Querier](./hackthebox/querier/README.md) | Hack The Box | Easy / Medium / Hard | 12 Evidences | [Read Assessment](./hackthebox/querier/) |
-| 080 | [Quick](./hackthebox/quick/README.md) | Hack The Box | Easy / Medium / Hard | 41 Evidences | [Read Assessment](./hackthebox/quick/) |
-| 081 | [Ready](./hackthebox/ready/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/ready/) |
-| 082 | [Redcross](./hackthebox/redcross/README.md) | Hack The Box | Easy / Medium / Hard | 25 Evidences | [Read Assessment](./hackthebox/redcross/) |
-| 083 | [Reel](./hackthebox/reel/README.md) | Hack The Box | Easy / Medium / Hard | 27 Evidences | [Read Assessment](./hackthebox/reel/) |
-| 084 | [Reel2](./hackthebox/reel2/README.md) | Hack The Box | Easy / Medium / Hard | 32 Evidences | [Read Assessment](./hackthebox/reel2/) |
-| 085 | [Remote](./hackthebox/remote/README.md) | Hack The Box | Easy / Medium / Hard | 15 Evidences | [Read Assessment](./hackthebox/remote/) |
-| 086 | [Safe](./hackthebox/safe/README.md) | Hack The Box | Easy / Medium / Hard | 17 Evidences | [Read Assessment](./hackthebox/safe/) |
-| 087 | [Sauna](./hackthebox/sauna/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/sauna/) |
-| 088 | [Schooled](./hackthebox/schooled/README.md) | Hack The Box | Easy / Medium / Hard | 25 Evidences | [Read Assessment](./hackthebox/schooled/) |
-| 089 | [Seal](./hackthebox/seal/README.md) | Hack The Box | Easy / Medium / Hard | 19 Evidences | [Read Assessment](./hackthebox/seal/) |
-| 090 | [Secnotes](./hackthebox/secnotes/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/secnotes/) |
-| 091 | [Sense](./hackthebox/sense/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/sense/) |
-| 092 | [Servmon](./hackthebox/servmon/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/servmon/) |
-| 093 | [Shocker](./hackthebox/shocker/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/shocker/) |
-| 094 | [Silo](./hackthebox/silo/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/silo/) |
-| 095 | [Sizzle](./hackthebox/sizzle/README.md) | Hack The Box | Easy / Medium / Hard | 23 Evidences | [Read Assessment](./hackthebox/sizzle/) |
-| 096 | [Sneakymailer](./hackthebox/sneakymailer/README.md) | Hack The Box | Easy / Medium / Hard | 18 Evidences | [Read Assessment](./hackthebox/sneakymailer/) |
-| 097 | [Sniper](./hackthebox/sniper/README.md) | Hack The Box | Easy / Medium / Hard | 23 Evidences | [Read Assessment](./hackthebox/sniper/) |
-| 098 | [Solidstate](./hackthebox/solidstate/README.md) | Hack The Box | Easy / Medium / Hard | 12 Evidences | [Read Assessment](./hackthebox/solidstate/) |
-| 099 | [Static](./hackthebox/static/README.md) | Hack The Box | Easy / Medium / Hard | 41 Evidences | [Read Assessment](./hackthebox/static/) |
-| 100 | [Swagshop](./hackthebox/swagshop/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/swagshop/) |
-| 101 | [Tabby](./hackthebox/tabby/README.md) | Hack The Box | Easy / Medium / Hard | 20 Evidences | [Read Assessment](./hackthebox/tabby/) |
-| 102 | [Tally](./hackthebox/tally/README.md) | Hack The Box | Easy / Medium / Hard | 22 Evidences | [Read Assessment](./hackthebox/tally/) |
-| 103 | [Tartarsauce](./hackthebox/tartarsauce/README.md) | Hack The Box | Easy / Medium / Hard | 20 Evidences | [Read Assessment](./hackthebox/tartarsauce/) |
-| 104 | [Time](./hackthebox/time/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/time/) |
-| 105 | [Traverxec](./hackthebox/traverxec/README.md) | Hack The Box | Easy / Medium / Hard | 14 Evidences | [Read Assessment](./hackthebox/traverxec/) |
-| 106 | [Unobtainium](./hackthebox/unobtainium/README.md) | Hack The Box | Easy / Medium / Hard | 45 Evidences | [Read Assessment](./hackthebox/unobtainium/) |
-| 107 | [Valentine](./hackthebox/valentine/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/valentine/) |
-| 108 | [Worker](./hackthebox/worker/README.md) | Hack The Box | Easy / Medium / Hard | 21 Evidences | [Read Assessment](./hackthebox/worker/) |
-| 109 | [Writer](./hackthebox/writer/README.md) | Hack The Box | Easy / Medium / Hard | 30 Evidences | [Read Assessment](./hackthebox/writer/) |
-| 110 | [Zetta](./hackthebox/zetta/README.md) | Hack The Box | Easy / Medium / Hard | 22 Evidences | [Read Assessment](./hackthebox/zetta/) |
+| 075 | [Permx](./hackthebox/permx/README.md) | Hack The Box | Easy / Medium / Hard | 24 Evidences | [Read Assessment](./hackthebox/permx/) |
+| 076 | [Pit](./hackthebox/pit/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/pit/) |
+| 077 | [Poison](./hackthebox/poison/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/poison/) |
+| 078 | [Popcorn](./hackthebox/popcorn/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/popcorn/) |
+| 079 | [Postman](./hackthebox/postman/README.md) | Hack The Box | Easy / Medium / Hard | 13 Evidences | [Read Assessment](./hackthebox/postman/) |
+| 080 | [Querier](./hackthebox/querier/README.md) | Hack The Box | Easy / Medium / Hard | 12 Evidences | [Read Assessment](./hackthebox/querier/) |
+| 081 | [Quick](./hackthebox/quick/README.md) | Hack The Box | Easy / Medium / Hard | 41 Evidences | [Read Assessment](./hackthebox/quick/) |
+| 082 | [Ready](./hackthebox/ready/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/ready/) |
+| 083 | [Redcross](./hackthebox/redcross/README.md) | Hack The Box | Easy / Medium / Hard | 25 Evidences | [Read Assessment](./hackthebox/redcross/) |
+| 084 | [Reel](./hackthebox/reel/README.md) | Hack The Box | Easy / Medium / Hard | 27 Evidences | [Read Assessment](./hackthebox/reel/) |
+| 085 | [Reel2](./hackthebox/reel2/README.md) | Hack The Box | Easy / Medium / Hard | 32 Evidences | [Read Assessment](./hackthebox/reel2/) |
+| 086 | [Remote](./hackthebox/remote/README.md) | Hack The Box | Easy / Medium / Hard | 15 Evidences | [Read Assessment](./hackthebox/remote/) |
+| 087 | [Safe](./hackthebox/safe/README.md) | Hack The Box | Easy / Medium / Hard | 17 Evidences | [Read Assessment](./hackthebox/safe/) |
+| 088 | [Sauna](./hackthebox/sauna/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/sauna/) |
+| 089 | [Schooled](./hackthebox/schooled/README.md) | Hack The Box | Easy / Medium / Hard | 25 Evidences | [Read Assessment](./hackthebox/schooled/) |
+| 090 | [Seal](./hackthebox/seal/README.md) | Hack The Box | Easy / Medium / Hard | 19 Evidences | [Read Assessment](./hackthebox/seal/) |
+| 091 | [Secnotes](./hackthebox/secnotes/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/secnotes/) |
+| 092 | [Sense](./hackthebox/sense/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/sense/) |
+| 093 | [Servmon](./hackthebox/servmon/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/servmon/) |
+| 094 | [Shocker](./hackthebox/shocker/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/shocker/) |
+| 095 | [Silo](./hackthebox/silo/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/silo/) |
+| 096 | [Sizzle](./hackthebox/sizzle/README.md) | Hack The Box | Easy / Medium / Hard | 23 Evidences | [Read Assessment](./hackthebox/sizzle/) |
+| 097 | [Sneakymailer](./hackthebox/sneakymailer/README.md) | Hack The Box | Easy / Medium / Hard | 18 Evidences | [Read Assessment](./hackthebox/sneakymailer/) |
+| 098 | [Sniper](./hackthebox/sniper/README.md) | Hack The Box | Easy / Medium / Hard | 23 Evidences | [Read Assessment](./hackthebox/sniper/) |
+| 099 | [Solidstate](./hackthebox/solidstate/README.md) | Hack The Box | Easy / Medium / Hard | 12 Evidences | [Read Assessment](./hackthebox/solidstate/) |
+| 100 | [Static](./hackthebox/static/README.md) | Hack The Box | Easy / Medium / Hard | 41 Evidences | [Read Assessment](./hackthebox/static/) |
+| 101 | [Swagshop](./hackthebox/swagshop/README.md) | Hack The Box | Easy / Medium / Hard | 11 Evidences | [Read Assessment](./hackthebox/swagshop/) |
+| 102 | [Tabby](./hackthebox/tabby/README.md) | Hack The Box | Easy / Medium / Hard | 20 Evidences | [Read Assessment](./hackthebox/tabby/) |
+| 103 | [Tally](./hackthebox/tally/README.md) | Hack The Box | Easy / Medium / Hard | 22 Evidences | [Read Assessment](./hackthebox/tally/) |
+| 104 | [Tartarsauce](./hackthebox/tartarsauce/README.md) | Hack The Box | Easy / Medium / Hard | 20 Evidences | [Read Assessment](./hackthebox/tartarsauce/) |
+| 105 | [Time](./hackthebox/time/README.md) | Hack The Box | Easy / Medium / Hard | 10 Evidences | [Read Assessment](./hackthebox/time/) |
+| 106 | [Traverxec](./hackthebox/traverxec/README.md) | Hack The Box | Easy / Medium / Hard | 14 Evidences | [Read Assessment](./hackthebox/traverxec/) |
+| 107 | [Unobtainium](./hackthebox/unobtainium/README.md) | Hack The Box | Easy / Medium / Hard | 45 Evidences | [Read Assessment](./hackthebox/unobtainium/) |
+| 108 | [Valentine](./hackthebox/valentine/README.md) | Hack The Box | Easy / Medium / Hard | 16 Evidences | [Read Assessment](./hackthebox/valentine/) |
+| 109 | [Worker](./hackthebox/worker/README.md) | Hack The Box | Easy / Medium / Hard | 21 Evidences | [Read Assessment](./hackthebox/worker/) |
+| 110 | [Writer](./hackthebox/writer/README.md) | Hack The Box | Easy / Medium / Hard | 30 Evidences | [Read Assessment](./hackthebox/writer/) |
+| 111 | [Zetta](./hackthebox/zetta/README.md) | Hack The Box | Easy / Medium / Hard | 22 Evidences | [Read Assessment](./hackthebox/zetta/) |
 
 ---
 
