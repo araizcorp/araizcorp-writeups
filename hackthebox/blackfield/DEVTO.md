@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for BlackField (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: BlackField
@@ -73,52 +73,52 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 
 ## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -128,52 +128,52 @@ evil-winrm -i 10.10.10.192 -u svc_backup -H 9658d1d1dcd9250115e2205d9f48400d
 ```
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_12.png)
 * **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_13.png)
 * **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_14.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_14.png)
 * **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_15.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_15.png)
 * **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_16.png)
+![step_16.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_16.png)
 * **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_17.png)
+![step_17.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_17.png)
 * **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_18.png)
+![step_18.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_18.png)
 * **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_19.png)
+![step_19.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_19.png)
 * **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_20.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_20.png)
 * **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -187,12 +187,12 @@ LOCAL
 ```
 
 
-![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_21.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_21.png)
 * **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_22.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_22.png)
+![step_22.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_22.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -204,7 +204,7 @@ evil-winrm -i 10.10.10.192 -u administrator -H 184fb5e5178480be64824d4cd53b99ee
 4375a629c7c67c8e29db269060c955cb
 
 
-![step_23.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/blackfield/images/step_23.png)
+![step_23.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/blackfield/images/step_23.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

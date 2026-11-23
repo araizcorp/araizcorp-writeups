@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Granny (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Granny
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se identifico **1 puerto TCP abierto** (puerto 80 - IIS 6.0). El servidor web es el unico servicio expuesto:
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,14 +89,14 @@ Se identifico **1 puerto TCP abierto** (puerto 80 - IIS 6.0). El servidor web es
 El script de Nmap **http-webdav-scan** identifico los metodos HTTP permitidos en el servidor, revelando que WebDAV esta habilitado:
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 El servidor ejecuta el framework [**ASP.NET**](http://ASP.NET) sobre IIS 6.0:
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -105,19 +105,19 @@ El servidor ejecuta el framework [**ASP.NET**](http://ASP.NET) sobre IIS 6.0:
 El metodo HTTP **PUT** permite subir archivos al servidor a traves de WebDAV. Sin embargo, la subida directa de archivos .aspx esta bloqueada. La tecnica consiste en subir un archivo .txt con contenido ASPX y luego usar el metodo MOVE para renombrarlo a .aspx:
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Alternativamente, la maquina es vulnerable to **CVE-2017-7269**, un buffer overflow en la funcion `ScStoragePathFromUrl` de IIS 6.0 WebDAV que allows remote code execution (RCE). El modulo de Metasploit `iis_webdav_scstoragepathfromurl` explota This vulnerability:
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -137,22 +137,22 @@ curl -s -X MOVE -H "Destination:http://10.10.10.15/webshell.aspx" http://10.10.1
 Luego se usa `impacket-smbserver` para servir `nc.exe` y obtener reverse shell:
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -163,7 +163,7 @@ Luego se usa `impacket-smbserver` para servir `nc.exe` y obtener reverse shell:
 Flag del usuario Lakis: `700c5dc163014e22b3e408f8703f67d1`
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_11.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -172,7 +172,7 @@ Flag del usuario Lakis: `700c5dc163014e22b3e408f8703f67d1`
 Flag del administrador: `aa4beed1c0584445ab463a6747bd06e9`
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/granny/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/granny/images/step_12.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 

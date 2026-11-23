@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Lame (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Lame
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se realizo un escaneo de puertos con Nmap identificando **4 puertos TCP abiertos** entre los top 1000. Los servicios incluyen FTP (vsftpd 2.3.4), SSH, y SMB (Samba 3.0.20):
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,21 +89,21 @@ Se realizo un escaneo de puertos con Nmap identificando **4 puertos TCP abiertos
 Se identifico **VSFTPd version 2.3.4** corriendo en el puerto 21. Esta version tiene un backdoor conocido, pero en este caso no es explotable:
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 El backdoor de VSFTPd 2.3.4 **no funciona** en esta maquina. Aunque el servicio es vulnerable, un firewall bloquea la conexion al puerto 6200 que el backdoor abre. Esto se confirma mas adelante con acceso root:
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Se identifico **Samba version 3.0.20** corriendo en el servicio SMB, que resulta ser el vector de ataque viable:
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -112,14 +112,14 @@ Se identifico **Samba version 3.0.20** corriendo en el servicio SMB, que resulta
 Samba 3.0.20 es vulnerable to **CVE-2007-2447**, que allows remote code execution (RCE) a traves de metacaracteres de shell en la funcion `SamrChangePassword` cuando la opcion "username map script" esta habilitada en `smb.conf`:
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 La explotacion de CVE-2007-2447 otorga acceso directo como **root**, sin necesidad de escalada de privilegios adicional:
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -132,7 +132,7 @@ Exploit utilizado: CVE-2007-2447
 Con acceso root, se obtuvo la flag del usuario makis: `1c8e9423a89affd9378a09042d8e98d2`
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -141,7 +141,7 @@ Con acceso root, se obtuvo la flag del usuario makis: `1c8e9423a89affd9378a09042
 La flag de root: `3b4c75e879a3ea31b99b45aac23955d1`
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -150,14 +150,14 @@ La flag de root: `3b4c75e879a3ea31b99b45aac23955d1`
 Con acceso root se investigo por que el exploit de VSFTPd fallo. Aunque `netstat -tnlp` muestra multiples puertos escuchando (incluyendo en 0.0.0.0), un **firewall** esta bloqueando las conexiones a estos puertos:
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_09.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 Cuando el backdoor de VSFTPd se activa, el puerto **6200** comienza a escuchar:
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/lame/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/lame/images/step_10.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 

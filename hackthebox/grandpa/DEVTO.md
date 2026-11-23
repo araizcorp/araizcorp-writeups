@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Grandpa (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Grandpa
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se identifico **Microsoft IIS version 6.0** corriendo en el puerto TCP 80. Esta version de IIS sobre Windows Server 2003 es conocida por multiples vulnerabilidades criticas en su componente WebDAV:
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,7 +89,7 @@ Se identifico **Microsoft IIS version 6.0** corriendo en el puerto TCP 80. Esta 
 IIS 6.0 con WebDAV habilitado es vulnerable to **CVE-2017-7269**, un buffer overflow en la funcion `ScStoragePathFromUrl` que permite a atacantes remotos ejecutar codigo arbitrario:
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -98,12 +98,12 @@ IIS 6.0 con WebDAV habilitado es vulnerable to **CVE-2017-7269**, un buffer over
 Se utilizo el modulo de Metasploit **exploit/windows/iis/iis_webdav_scstoragepathfromurl** para explotar CVE-2017-7269 y obtener una shell inicial:
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -112,7 +112,7 @@ Se utilizo el modulo de Metasploit **exploit/windows/iis/iis_webdav_scstoragepat
 Se utilizo **local_exploit_suggester** de Metasploit para identificar exploits de escalada aplicables al sistema. El modulo sugirio vulnerabilidades de token kidnapping que permitieron escalar a NT AUTHORITYSYSTEM:
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -123,17 +123,17 @@ Se utilizo **local_exploit_suggester** de Metasploit para identificar exploits d
 Flag del usuario Harry: `bdff5ec67c3cff017f2bedc146a5d869`
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_08.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -142,7 +142,7 @@ Flag del usuario Harry: `bdff5ec67c3cff017f2bedc146a5d869`
 Flag del administrador: `9359e905a2c35f861f6a57cecf28bb7b`
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/grandpa/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/grandpa/images/step_09.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

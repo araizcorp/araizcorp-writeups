@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Chatterbox (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Chatterbox
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 El escaneo completo de puertos revela 2 puertos TCP fuera del top 1000 de nmap: 9255 y 9256.
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,7 +89,7 @@ El escaneo completo de puertos revela 2 puertos TCP fuera del top 1000 de nmap: 
 En el puerto 9256 corre **AChat**, un servicio de chat LAN para Windows.
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -98,41 +98,41 @@ En el puerto 9256 corre **AChat**, un servicio de chat LAN para Windows.
 Existe un buffer overflow conocido en esta version de AChat. El exploit envia el payload al **puerto UDP 9256**, obteniendo ejecucion de codigo remoto.
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 El servicio AChat corre bajo el usuario **alfred**. Se genera un payload con msfvenom y se adapta el exploit en Python para obtener una reverse shell.
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 #### User Proof Flag Verification
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -141,24 +141,24 @@ El servicio AChat corre bajo el usuario **alfred**. Se genera un payload con msf
 Revisando el registro de Windows (AutoLogon), se encuentra la contrasena del administrador: **Welcome1!**. El usuario alfred reutiliza credenciales que permiten acceder como Administrator mediante cambio de permisos en ACLs o ejecutando comandos con las credenciales de admin.
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 #### Root / System Proof Flag Verification
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_12.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/chatterbox/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/chatterbox/images/step_13.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

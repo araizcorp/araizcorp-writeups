@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for OpenAdmin (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: OpenAdmin
@@ -80,12 +80,12 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 El escaneo de puertos revela un servidor web Apache con tres directorios principales: `/artwork`, `/sierra` y `/music`.
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -94,14 +94,14 @@ El escaneo de puertos revela un servidor web Apache con tres directorios princip
 Navegando a `/music`, se encuentra un enlace que apunta a `/ona`, una instancia de **OpenNetAdmin** (ONA), una herramienta de administracion de red.
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_04.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 La version de OpenNetAdmin que corre en la maquina es **18.1.1**, la cual es vulnerable to Remote Code Execution (CVE-2019-43818).
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -110,22 +110,22 @@ La version de OpenNetAdmin que corre en la maquina es **18.1.1**, la cual es vul
 Se explota la vulnerabilidad RCE en OpenNetAdmin 18.1.1 para obtener ejecucion de comandos como el usuario **www-data**.
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -134,43 +134,43 @@ Se explota la vulnerabilidad RCE en OpenNetAdmin 18.1.1 para obtener ejecucion d
 Revisando los archivos de configuracion de ONA, se encuentra la contrasena de la base de datos que resulta ser reutilizada por el usuario **jimmy**: `n1nj4W4rri0R!`. Se accede al sistema via SSH como jimmy.
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Enumerando la configuracion de Apache, se descubre un virtual host interno llamado **internal.openadmin.htb** que corre bajo el usuario **joanna** en un puerto local.
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Accediendo al vhost interno mediante port forwarding, se encuentra una pagina que revela la clave privada SSH de joanna.
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_12.png)
 * **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_13.png)
 * **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 La clave privada esta protegida con passphrase. Se extrae el hash con ssh2john y se crackea con john, obteniendo la passphrase: **bloodninjas**. Con esto se accede por SSH como joanna.
 
 
-![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_14.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_14.png)
 * **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_15.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_15.png)
 * **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -179,7 +179,7 @@ La clave privada esta protegida con passphrase. Se extrae el hash con ssh2john y
 #### User Proof Flag Verification
 
 
-![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_16.png)
+![step_16.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_16.png)
 * **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -188,29 +188,29 @@ La clave privada esta protegida con passphrase. Se extrae el hash con ssh2john y
 Ejecutando `sudo -l`, se descubre que joanna puede ejecutar **nano** como root sobre `/opt/priv`. Siguiendo la tecnica de GTFOBins para nano, se obtiene una shell como root ejecutando comandos desde dentro del editor.
 
 
-![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_17.png)
+![step_17.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_17.png)
 * **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 #### Root / System Proof Flag Verification
 
 
-![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_18.png)
+![step_18.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_18.png)
 * **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_19.png)
+![step_19.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_19.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_20.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_20.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 
 
-![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/openadmin/images/step_21.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/openadmin/images/step_21.png)
 * **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 ---

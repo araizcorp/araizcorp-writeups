@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Neighbour (TryHackMe). Methodological walkthrough covering enumeration, exploitation, privilege escalation, and OffSec-aligned hardening."
 tags: cybersecurity, tryhackme, pentesting, infosec
 series: "TryHackMe Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/neighbour/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/neighbour/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Neighbour
@@ -73,22 +73,22 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 
 ## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/neighbour/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/neighbour/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/neighbour/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/neighbour/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/neighbour/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/neighbour/images/step_03.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/neighbour/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/neighbour/images/step_04.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

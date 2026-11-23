@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Optimum (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Optimum
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se identifico el servicio **HttpFileServer (HFS) version 2.3** corriendo en el puerto TCP 80. HFS es un servidor web ligero utilizado para compartir archivos, y esta version especifica contiene una vulnerabilidad critica de ejecucion remota de codigo:
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,7 +89,7 @@ Se identifico el servicio **HttpFileServer (HFS) version 2.3** corriendo en el p
 La version 2.3 de HFS es vulnerable to **CVE-2014-6287**, una vulnerabilidad de ejecucion remota de codigo en la funcion `findMacroMarker`. El fallo permite inyectar comandos del sistema operativo a traves de caracteres null byte (`%00`) en la busqueda del servidor:
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -98,14 +98,14 @@ La version 2.3 de HFS es vulnerable to **CVE-2014-6287**, una vulnerabilidad de 
 Al explotar CVE-2014-6287, se obtuvo una shell como el usuario **kostas**, que es el usuario bajo el cual corre el servicio HFS. La flag de usuario se encontro en el escritorio de kostas: `eab5aa9ba0ed1d805556ed23acfcb7e0`
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 Adicionalmente, se identifico la contrasena del usuario kostas: `kdeEjDowkS*`
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -114,12 +114,12 @@ Adicionalmente, se identifico la contrasena del usuario kostas: `kdeEjDowkS*`
 Para escalar privilegios, se utilizo el modulo de Metasploit **post/multi/recon/local_exploit_suggester**, que analiza el sistema comprometido y sugiere exploits locales aplicables. Este modulo identifico vulnerabilidades de kernel explotables para obtener NT AUTHORITYSYSTEM:
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -128,12 +128,12 @@ Para escalar privilegios, se utilizo el modulo de Metasploit **post/multi/recon/
 Tras la escalada de privilegios exitosa, se obtuvo la flag del administrador: `109a117b89b316614742c21782d3c8e6`
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_07.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/optimum/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/optimum/images/step_08.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

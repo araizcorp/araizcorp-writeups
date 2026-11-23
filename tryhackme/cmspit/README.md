@@ -26,7 +26,7 @@
 | **Platform** | TryHackMe |
 | **Operating System** | Linux |
 | **Difficulty Rating** | Medium |
-| **Associated CVE(s)** | CVE-2021-22204, cve-2021-22204 |
+| **Associated CVE(s)** | cve-2021-22204, CVE-2021-22204 |
 | **Initial Foothold Vector** | Web Application Exploitation / Default Credentials |
 | **Privilege Escalation Vector** | Abuse of SUID Binaries / Sudo Misconfiguration |
 | **Lead Penetration Tester** | Pedro Araiz (`araizcorp`) |
@@ -348,7 +348,7 @@ Root.txt
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
 ### Immediate Tactical Actions (P1)
-1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (CVE-2021-22204, cve-2021-22204).
+1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (cve-2021-22204, CVE-2021-22204).
 2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
 3. **Attack Surface Reduction:** Configure host-based firewalls (e.g., `iptables` / `ufw` / Windows Firewall) to restrict exposure of management services and internal ports to trusted administrative subnets only.
 

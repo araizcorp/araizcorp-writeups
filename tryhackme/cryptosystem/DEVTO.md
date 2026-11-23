@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Cryptosystem (TryHackMe). Methodological walkthrough covering enumeration, exploitation, privilege escalation, and OffSec-aligned hardening."
 tags: cybersecurity, tryhackme, pentesting, infosec
 series: "TryHackMe Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/cryptosystem/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/cryptosystem/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Cryptosystem
@@ -111,7 +111,7 @@ print(f"[+] Flag: {long_to_bytes(m).decode()}")
 ```
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/tryhackme/cryptosystem/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/tryhackme/cryptosystem/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 

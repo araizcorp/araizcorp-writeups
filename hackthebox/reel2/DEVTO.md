@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Reel2 (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Reel2
@@ -73,48 +73,48 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 
 ## 🔬 3. Technical Walkthrough & Step-by-Step Proof of Concept
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
 ferox da error 
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 me registro
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 veo si la shell que subi como foto funciona y se interpreta y no lo hace 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -133,77 +133,77 @@ veo si la shell que subi como foto funciona y se interpreta y no lo hace
 ```
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_12.png)
 * **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_13.png)
 * **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_14.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_14.png)
 * **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_15.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_15.png)
 * **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_16.png)
+![step_16.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_16.png)
 * **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_17.png)
+![step_17.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_17.png)
 * **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_18.png)
+![step_18.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_18.png)
 * **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_19.png)
+![step_19.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_19.png)
 * **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_20.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_20.png)
 * **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_21.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_21.png)
 * **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_22.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_22.png)
+![step_22.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_22.png)
 * **Assessment Step 22:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_23.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_23.png)
+![step_23.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_23.png)
 * **Assessment Step 23:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -212,49 +212,49 @@ veo si la shell que subi como foto funciona y se interpreta y no lo hace
 cambie a pwon de htb por problemas con pwsh
 
 
-![step_24.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_24.png)
+![step_24.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_24.png)
 * **Assessment Step 24:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_25.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_25.png)
+![step_25.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_25.png)
 * **Assessment Step 25:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_26.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_26.png)
+![step_26.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_26.png)
 * **Assessment Step 26:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_27.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_27.png)
+![step_27.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_27.png)
 * **Assessment Step 27:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_28.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_28.png)
+![step_28.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_28.png)
 * **Assessment Step 28:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_29.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_29.png)
+![step_29.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_29.png)
 * **Assessment Step 29:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_30.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_30.png)
+![step_30.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_30.png)
 * **Assessment Step 30:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 jea_test_account:Ab!Q@vcg^%@#1
 
 
-![step_31.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_31.png)
+![step_31.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_31.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
 
-![step_32.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/reel2/images/step_32.png)
+![step_32.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/reel2/images/step_32.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

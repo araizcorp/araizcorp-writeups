@@ -4,7 +4,7 @@ published: true
 description: "Comprehensive offensive security assessment and penetration testing report for Legacy (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
-cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_01.png"
+cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_01.png"
 ---
 
 # Offensive Security Assessment Report: Legacy
@@ -80,14 +80,14 @@ cover_image: "https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/mai
 Se realizo un escaneo de puertos con Nmap identificando **3 puertos TCP abiertos**. Entre ellos se encuentra el servicio SMB, que resulta ser el vector de ataque principal.
 
 
-![step_01.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_01.png)
+![step_01.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_01.png)
 * **Technical Finding (Phase 1):** Initial network reconnaissance and service detection exposing active daemons and communication endpoints.
 
 
 ### Phase 2: Vulnerability Analysis & Attack Surface Mapping
 
 
-![step_02.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_02.png)
+![step_02.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_02.png)
 * **Technical Finding (Phase 2):** Attack surface enumeration, directory discovery, or parameter analysis identifying potential vulnerability vectors.
 
 
@@ -96,14 +96,14 @@ Se realizo un escaneo de puertos con Nmap identificando **3 puertos TCP abiertos
 Se utilizo el modulo de Metasploit **exploit/windows/smb/ms08_067_netapi** para explotar la vulnerabilidad. Este modulo aprovecha un desbordamiento de buffer en la funcion `NetPathCanonicalize()` del servicio Server para obtener ejecucion remota de codigo:
 
 
-![step_03.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_03.png)
+![step_03.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_03.png)
 * **Assessment Step 03:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
 El exploit otorga acceso directo como **NT AUTHORITYSYSTEM**, el nivel de privilegios mas alto en Windows. No se requiere escalada de privilegios adicional ya que el exploit compromete el servicio SMB que corre con privilegios de SYSTEM:
 
 
-![step_04.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_04.png)
+![step_04.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_04.png)
 * **Assessment Step 04:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -114,7 +114,7 @@ El exploit otorga acceso directo como **NT AUTHORITYSYSTEM**, el nivel de privil
 Con acceso SYSTEM, se navego al escritorio del usuario john para obtener la flag de usuario: `e69af0e4f443de7e36876fda4ec7644f`
 
 
-![step_05.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_05.png)
+![step_05.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_05.png)
 * **Assessment Step 05:** Command execution output, exploit delivery proof, or auxiliary evidence.
 
 
@@ -123,7 +123,7 @@ Con acceso SYSTEM, se navego al escritorio del usuario john para obtener la flag
 La flag del administrador se encontro en el escritorio de Administrator: `993442d258b0e0ec917cae9e695d5713`
 
 
-![step_06.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_06.png)
+![step_06.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_06.png)
 * **Privilege Escalation PoC (Phase 4):** Exploitation of misconfiguration, SUID binary, or vulnerability leading to elevated privileges.
 
 
@@ -132,7 +132,7 @@ La flag del administrador se encontro en el escritorio de Administrator: `993442
 Ademas de MS08-067, el servicio SMB de Legacy tambien es vulnerable to **CVE-2017-0143** (MS17-010 / EternalBlue), otra vulnerabilidad critica de ejecucion remota de codigo en SMBv1. Esto demuestra que la maquina tiene multiples vectores de ataque a traves de SMB, ambos explotables para obtener SYSTEM directamente.
 
 
-![step_07.png](https://raw.githubusercontent.com/araizcorp/tryhackme-writeups/main/hackthebox/legacy/images/step_07.png)
+![step_07.png](https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/legacy/images/step_07.png)
 * **Evidence Verification (Phase 5):** Final administrative validation confirming root/SYSTEM access and retrieval of system flags.
 
 ---
