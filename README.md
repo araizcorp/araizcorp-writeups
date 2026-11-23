@@ -1,13 +1,13 @@
-# 🏢 araizcorp — Offensive Security Assessment Portfolio
+# 🏢 araizcorp — Enterprise Technical Security Assessment Portfolio
 
-![Security Assessment](https://img.shields.io/badge/Security%20Assessment-Enterprise%20OffSec%20Standard-red?style=for-the-badge)
-![Certifications](https://img.shields.io/badge/OffSec%20Portfolio-OSCP%20%7C%20OSEP%20%7C%20OSWE-blue?style=for-the-badge)
+![Security Assessment](https://img.shields.io/badge/Security%20Assessment-Enterprise%20PTES%20Standard-red?style=for-the-badge)
+![Certifications](https://img.shields.io/badge/Methodology-PTES%20%7C%20NIST%20800--115-blue?style=for-the-badge)
 ![Assessor](https://img.shields.io/badge/Lead%20Assessor-Pedro%20Araiz%20(araizcorp)-informational?style=for-the-badge)
 ![Total Audited Targets](https://img.shields.io/badge/Total%20Audited%20Targets-143%20Systems-brightgreen?style=for-the-badge)
 
-Central repository and offensive security assessment portfolio for **araizcorp**, specialized in **enterprise penetration testing, advanced red teaming, and OffSec certification enablement (OSCP, OSEP, OSWE)**.
+Central repository and technical security assessment portfolio for **araizcorp**, specialized in **enterprise penetration testing, advanced red teaming, and advanced penetration testing, technical vulnerability research, and defensive hardening**.
 
-Every assessment deliverable within this portfolio follows international penetration testing standards (**PTES**, **NIST SP 800-115**, and **OffSec Reporting Guidelines**), rigorously documenting:
+Every assessment deliverable within this portfolio follows international penetration testing standards (**PTES**, **NIST SP 800-115**, and **NIST SP 800-115 Guidelines**), rigorously documenting:
 1. **Executive Summary:** Business impact analysis, overall risk ratings, and executive risk summaries.
 2. **Reconnaissance & Surface Enumeration:** Deep-dive fingerprinting of active services, attack surfaces, and daemons.
 3. **Exploitation & Initial Access Proof of Concept:** Controlled, non-disruptive weaponization with verifiable reproduction commands.
@@ -176,7 +176,7 @@ Every assessment deliverable within this portfolio follows international penetra
 
 ### 📩 Inquiries & Consulting Engagement
 * **Firm:** araizcorp
-* **Practice Focus:** Penetration Testing, Red Teaming, Vulnerability Research, OffSec Certification Enablement.
+* **Practice Focus:** Penetration Testing, Red Teaming, Vulnerability Research, Defensive Security Enablement.
 * **Official Web Portal:** [araizcorp.tech](https://araizcorp.tech)
 
-© 2026 Pedro Araiz (`araizcorp`) — Offensive Security Consulting & Enterprise Assessment Portfolio.
+© 2026 Pedro Araiz (`araizcorp`) — Technical Security Consulting & Enterprise Assessment Portfolio.

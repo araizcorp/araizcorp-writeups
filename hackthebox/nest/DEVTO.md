@@ -1,21 +1,21 @@
 ---
-title: "OffSec Assessment: Nest (Hack The Box) — Penetration Testing Report"
+title: "Security Assessment: Nest (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Comprehensive offensive security assessment and penetration testing report for Nest (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+description: "Comprehensive offensive security assessment and penetration testing report for Nest (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and Enterprise Security remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/nest/images/step_01.png"
 ---
 
-# Offensive Security Assessment Report: Nest
+# Security Assessment Report: Nest
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Windows-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
-![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-PTES%20%2F%20NIST%20SP%20800--115-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Security%20Labs-blue?style=for-the-badge)
 
-**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Nest** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
+**Technical Security Assessment & Penetration Testing Report** conducted on the target environment **Nest** hosted on **Hack The Box**, executed in accordance with **PTES and NIST SP 800-115** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
@@ -202,6 +202,37 @@ R 324cee24643bad7bb158cf6e98aabacc
 
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
+### 🛡️ Prioritized Findings, Attack Path Preconditions & Repeatable Verification
+
+| Finding & Precondition | Attack Path Impact | Remediation Action | Repeatable Verification Command |
+| :--- | :--- | :--- | :--- |
+| **P1: Public-Facing Network Service Exploitation**<br>*Precondition:* Unauthenticated network service exposure without network segmentation or perimeter access controls. | **High / Critical (Foothold Chokepoint)**<br>Altered the primary attack path by exposing unauthenticated remote access to internal context. | Apply zero-trust ingress filtering, patch exposed service to latest vendor release, and mandate MFA. | `powershell -Command "Test-NetConnection -ComputerName $TARGET_IP -Port $EXPOSED_PORT"` |
+| **P1: Local Privilege Escalation**<br>*Precondition:* Insecure local privileges or stored administrative credentials accessible to low-privilege sessions. | **Critical (Full Compromise)**<br>Enabled complete elevation of privileges from unprivileged user to superuser / administrator. | Implement LAPS for local administrator password rotation and audit token privileges. | `reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword` |
+
+#### 🔬 Repeatable Verification Procedures (Defensive Validation)
+
+**1. Verification for Ingress / Foothold Mitigation (Public-Facing Network Service Exploitation):**
+* **Validation Goal:** Confirm the remote exploitation path is definitively closed and non-exploitable.
+* **Deterministic Test Command:**
+```bash
+powershell -Command "Test-NetConnection -ComputerName $TARGET_IP -Port $EXPOSED_PORT"
+```
+* **Expected Output upon Successful Remediation:**
+```text
+TcpTestSucceeded : False (Port blocked by perimeter firewall)
+```
+
+**2. Verification for Local Privilege Escalation Mitigation (Local Privilege Escalation):**
+* **Validation Goal:** Enforce strict least-privilege boundary preventing local execution context from elevating to administrative/root privileges.
+* **Deterministic Test Command:**
+```bash
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword
+```
+* **Expected Output upon Successful Remediation:**
+```text
+ERROR: The system was unable to find the specified registry key or value.
+```
+
 ### Immediate Tactical Actions (P1)
 1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (N/A).
 2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
@@ -225,4 +256,4 @@ R 324cee24643bad7bb158cf6e98aabacc
 
 ---
 
-© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for enterprise penetration testing enablement, vulnerability research, and defensive hardening.

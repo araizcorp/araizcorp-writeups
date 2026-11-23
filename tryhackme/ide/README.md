@@ -1,12 +1,12 @@
-# Offensive Security Assessment Report: IDE
+# Security Assessment Report: IDE
 
 ![TryHackMe](https://img.shields.io/badge/Platform-TryHackMe-blue?style=for-the-badge&logo=tryhackme)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
-![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-PTES%20%2F%20NIST%20SP%20800--115-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Security%20Labs-blue?style=for-the-badge)
 
-**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **IDE** hosted on **TryHackMe**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
+**Technical Security Assessment & Penetration Testing Report** conducted on the target environment **IDE** hosted on **TryHackMe**, executed in accordance with **PTES and NIST SP 800-115** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
@@ -336,6 +336,37 @@ nc -lnvp 999
 
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
+### 🛡️ Prioritized Findings, Attack Path Preconditions & Repeatable Verification
+
+| Finding & Precondition | Attack Path Impact | Remediation Action | Repeatable Verification Command |
+| :--- | :--- | :--- | :--- |
+| **P1: Anonymous FTP Exposure & Cleartext Credential Leak**<br>*Precondition:* `anonymous_enable=YES` in `/etc/vsftpd.conf` allowed unauthenticated access to hidden directory `...` containing developer passwords. | **High / Critical (Foothold Chokepoint)**<br>Enabled unauthenticated attacker to obtain credentials for Codiad IDE and exploit CVE-2018-14009 for initial remote shell execution. | Set `anonymous_enable=NO` in `/etc/vsftpd.conf`, remove exposed credentials from file trees, and upgrade Codiad IDE. | `ftp -n $TARGET_IP <<< "user anonymous" 2>&1 | grep -i "Login incorrect"` |
+| **P1: Insecure Permissions on systemd Unit (`vsftpd.service`)**<br>*Precondition:* Standard user `drac` held write permissions to `/lib/systemd/system/vsftpd.service` with sudo rights to restart the daemon. | **Critical (Full Compromise)**<br>Allowed low-privilege user to inject arbitrary bash reverse shell commands into `ExecStartPre` and execute as `root`. | Enforce root-only ownership (`chown root:root`) and read-only permissions (`chmod 644`) on all systemd unit definitions. | `ls -l /lib/systemd/system/vsftpd.service /etc/systemd/system/vsftpd.service` |
+
+#### 🔬 Repeatable Verification Procedures (Defensive Validation)
+
+**1. Verification for Ingress / Foothold Mitigation (Anonymous FTP & Web Exposure):**
+* **Validation Goal:** Confirm anonymous FTP sessions are rejected and web endpoints reject unauthorized requests.
+* **Deterministic Test Command:**
+```bash
+ftp -n $TARGET_IP <<< "user anonymous" 2>&1 | grep -i "530 Login incorrect"
+```
+* **Expected Output upon Successful Remediation:**
+```text
+530 Login incorrect. Login failed.
+```
+
+**2. Verification for Local Privilege Escalation Mitigation (systemd Unit Permissions):**
+* **Validation Goal:** Enforce strict file integrity preventing non-root users from tampering with system service configurations.
+* **Deterministic Test Command:**
+```bash
+find /etc/systemd/system /lib/systemd/system -name "*.service" -perm -002 -ls
+```
+* **Expected Output upon Successful Remediation:**
+```text
+(No world-writable systemd units returned - clean state)
+```
+
 ### Immediate Tactical Actions (P1)
 1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (CVE-2018-14009).
 2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
@@ -359,4 +390,4 @@ nc -lnvp 999
 
 ---
 
-© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for enterprise penetration testing enablement, vulnerability research, and defensive hardening.

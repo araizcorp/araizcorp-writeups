@@ -1,21 +1,21 @@
 ---
-title: "OffSec Assessment: SwagShop (Hack The Box) — Penetration Testing Report"
+title: "Security Assessment: SwagShop (Hack The Box) — Penetration Testing Report"
 published: true
-description: "Comprehensive offensive security assessment and penetration testing report for SwagShop (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and OffSec remediation."
+description: "Comprehensive offensive security assessment and penetration testing report for SwagShop (Hack The Box). Methodological analysis covering initial access, local privilege escalation, and Enterprise Security remediation."
 tags: cybersecurity, hackthebox, pentesting, infosec
 series: "HackTheBox Enterprise Assessments"
 cover_image: "https://raw.githubusercontent.com/araizcorp/araizcorp-writeups/main/hackthebox/swagshop/images/step_01.png"
 ---
 
-# Offensive Security Assessment Report: SwagShop
+# Security Assessment Report: SwagShop
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
-![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-PTES%20%2F%20NIST%20SP%20800--115-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Security%20Labs-blue?style=for-the-badge)
 
-**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **SwagShop** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
+**Technical Security Assessment & Penetration Testing Report** conducted on the target environment **SwagShop** hosted on **Hack The Box**, executed in accordance with **PTES and NIST SP 800-115** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
@@ -163,6 +163,37 @@ Flag de root: `7ecfcf588fcc799dd5a1f5363fd0a166`
 
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
+### 🛡️ Prioritized Findings, Attack Path Preconditions & Repeatable Verification
+
+| Finding & Precondition | Attack Path Impact | Remediation Action | Repeatable Verification Command |
+| :--- | :--- | :--- | :--- |
+| **P1: Magento 1.9.0.0 Shoplift SQLi + Admin Panel RCE**<br>*Precondition:* Public network service reachable without rate-limiting, authentication barriers, or egress filtering. | **High / Critical (Foothold Chokepoint)**<br>Altered the primary attack path by exposing unauthenticated remote access to internal context. | Audit listening sockets via `ss -tulpn`, apply UFW / iptables rules, and patch daemon binaries. | `nmap -p- --open -T4 $TARGET_IP` |
+| **P1: sudo vi (GTFOBins)**<br>*Precondition:* Overly permissive `NOPASSWD` entry in `/etc/sudoers` or SUID bit set on GTFOBins executable. | **Critical (Full Compromise)**<br>Enabled complete elevation of privileges from unprivileged user to superuser / administrator. | Remove unrestricted sudo rules, strip SUID bits (`chmod u-s`), and mandate password re-authentication. | `sudo -l -U target_user 2>&1 | grep -E '(NOPASSWD|ALL)' || echo 'SECURE: No unauthorized sudo privileges'` |
+
+#### 🔬 Repeatable Verification Procedures (Defensive Validation)
+
+**1. Verification for Ingress / Foothold Mitigation (Magento 1.9.0.0 Shoplift SQLi + Admin Panel RCE):**
+* **Validation Goal:** Confirm the remote exploitation path is definitively closed and non-exploitable.
+* **Deterministic Test Command:**
+```bash
+nmap -p- --open -T4 $TARGET_IP
+```
+* **Expected Output upon Successful Remediation:**
+```text
+Only strictly required operational ports exposed (e.g., 443/TCP)
+```
+
+**2. Verification for Local Privilege Escalation Mitigation (sudo vi (GTFOBins)):**
+* **Validation Goal:** Enforce strict least-privilege boundary preventing local execution context from elevating to administrative/root privileges.
+* **Deterministic Test Command:**
+```bash
+sudo -l -U target_user 2>&1 | grep -E '(NOPASSWD|ALL)' || echo 'SECURE: No unauthorized sudo privileges'
+```
+* **Expected Output upon Successful Remediation:**
+```text
+SECURE: No unauthorized sudo privileges
+```
+
 ### Immediate Tactical Actions (P1)
 1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (Magento Shoplift (SQLi)).
 2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
@@ -186,4 +217,4 @@ Flag de root: `7ecfcf588fcc799dd5a1f5363fd0a166`
 
 ---
 
-© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for enterprise penetration testing enablement, vulnerability research, and defensive hardening.

@@ -1,12 +1,12 @@
-# Offensive Security Assessment Report: Bounty
+# Security Assessment Report: Bounty
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Windows-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
-![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-PTES%20%2F%20NIST%20SP%20800--115-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Security%20Labs-blue?style=for-the-badge)
 
-**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **Bounty** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
+**Technical Security Assessment & Penetration Testing Report** conducted on the target environment **Bounty** hosted on **Hack The Box**, executed in accordance with **PTES and NIST SP 800-115** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
@@ -582,6 +582,37 @@ whoami /priv
 
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
+### 🛡️ Prioritized Findings, Attack Path Preconditions & Repeatable Verification
+
+| Finding & Precondition | Attack Path Impact | Remediation Action | Repeatable Verification Command |
+| :--- | :--- | :--- | :--- |
+| **P1: IIS web.config Upload + ASP Code Execution**<br>*Precondition:* Publicly exposed web application endpoint allowing unauthenticated file execution or weak credential access. | **High / Critical (Foothold Chokepoint)**<br>Altered the primary attack path by exposing unauthenticated remote access to internal context. | Restrict webroot write permissions, disable script execution in upload directories, and implement WAF filtering. | `powershell -Command "Get-WebConfigurationProperty -Filter 'system.webServer/handlers' -PSPath 'IIS:\Sites\Default Web Site\uploads' -Name 'accessPolicy'"` |
+| **P1: SeImpersonatePrivilege + Lonely Potato**<br>*Precondition:* Service account granted `SeImpersonatePrivilege` or `SeAssignPrimaryTokenPrivilege` rights. | **Critical (Full Compromise)**<br>Enabled complete elevation of privileges from unprivileged user to superuser / administrator. | Remove impersonation privileges from service accounts using Group Policy; leverage virtual service accounts. | `whoami /priv | findstr /i 'SeImpersonatePrivilege'` |
+
+#### 🔬 Repeatable Verification Procedures (Defensive Validation)
+
+**1. Verification for Ingress / Foothold Mitigation (IIS web.config Upload + ASP Code Execution):**
+* **Validation Goal:** Confirm the remote exploitation path is definitively closed and non-exploitable.
+* **Deterministic Test Command:**
+```bash
+powershell -Command "Get-WebConfigurationProperty -Filter 'system.webServer/handlers' -PSPath 'IIS:\Sites\Default Web Site\uploads' -Name 'accessPolicy'"
+```
+* **Expected Output upon Successful Remediation:**
+```text
+accessPolicy : Read, None (Execute/Script strictly forbidden)
+```
+
+**2. Verification for Local Privilege Escalation Mitigation (SeImpersonatePrivilege + Lonely Potato):**
+* **Validation Goal:** Enforce strict least-privilege boundary preventing local execution context from elevating to administrative/root privileges.
+* **Deterministic Test Command:**
+```bash
+whoami /priv | findstr /i 'SeImpersonatePrivilege'
+```
+* **Expected Output upon Successful Remediation:**
+```text
+INFO: SeImpersonatePrivilege is not assigned or listed as Disabled.
+```
+
 ### Immediate Tactical Actions (P1)
 1. **Patch Management & Software Upgrades:** Immediately apply official security updates and patches for all vulnerable software components and exposed services (MS10-092).
 2. **Access Control & SUID Audit:** Remove unnecessary SUID/SGID bits, audit `/etc/sudoers` rules, and enforce strict Access Control Lists (ACLs) on sensitive files and administrative scripts.
@@ -605,4 +636,4 @@ whoami /priv
 
 ---
 
-© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for enterprise penetration testing enablement, vulnerability research, and defensive hardening.

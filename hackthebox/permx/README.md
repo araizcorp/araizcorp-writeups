@@ -1,12 +1,12 @@
-# Offensive Security Assessment Report: PermX
+# Security Assessment Report: PermX
 
 ![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-green?style=for-the-badge&logo=hackthebox)
 ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-brightgreen?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-Linux-orange?style=for-the-badge)
-![Standards](https://img.shields.io/badge/Standards-OffSec%20PEN--200%20%2F%20PTES-purple?style=for-the-badge)
-![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Offensive%20Security-blue?style=for-the-badge)
+![Standards](https://img.shields.io/badge/Standards-PTES%20%2F%20NIST%20SP%20800--115-purple?style=for-the-badge)
+![Assessor](https://img.shields.io/badge/Assessor-araizcorp%20Security%20Labs-blue?style=for-the-badge)
 
-**Offensive Security Assessment & Penetration Testing Report** conducted on the target environment **PermX** hosted on **Hack The Box**, executed in accordance with **OffSec PEN-200 (OSCP)** and **PTES (Penetration Testing Execution Standard)** methodologies.
+**Technical Security Assessment & Penetration Testing Report** conducted on the target environment **PermX** hosted on **Hack The Box**, executed in accordance with **PTES and NIST SP 800-115** and **PTES (Penetration Testing Execution Standard)** methodologies.
 
 ---
 
@@ -373,6 +373,37 @@ cat /root/root.txt
 
 ## 🛡️ 4. Strategic Remediation & Hardening Roadmap
 
+### 🛡️ Prioritized Findings, Attack Path Preconditions & Repeatable Verification
+
+| Finding & Precondition | Attack Path Impact | Remediation Action | Repeatable Verification Command |
+| :--- | :--- | :--- | :--- |
+| **P1: Chamilo LMS v1.11.24 Unauthenticated Arbitrary File Upload (CVE-2023-4220)**<br>*Precondition:* Unauthenticated public web endpoint accepting unsanitized file uploads or parameter injection. | **High / Critical (Foothold Chokepoint)**<br>Altered the primary attack path by exposing unauthenticated remote access to internal context. | Deploy vendor security patches, disable PHP execution in static folders, and implement reverse proxy rate limits. | `curl -I -s -o /dev/null -w "HTTP Status: %{http_code}" http://$TARGET_IP/uploads/shell.php` |
+| **P1: Sudo SUID Script Symlink Traversal (`/opt/acl.sh` modifying `/etc/sudoers`)**<br>*Precondition:* Overly permissive `NOPASSWD` entry in `/etc/sudoers` or SUID bit set on GTFOBins executable. | **Critical (Full Compromise)**<br>Enabled complete elevation of privileges from unprivileged user to superuser / administrator. | Remove unrestricted sudo rules, strip SUID bits (`chmod u-s`), and mandate password re-authentication. | `sudo -l -U target_user 2>&1 | grep -E '(NOPASSWD|ALL)' || echo 'SECURE: No unauthorized sudo privileges'` |
+
+#### 🔬 Repeatable Verification Procedures (Defensive Validation)
+
+**1. Verification for Ingress / Foothold Mitigation (Chamilo LMS v1.11.24 Unauthenticated Arbitrary File Upload (CVE-2023-4220)):**
+* **Validation Goal:** Confirm the remote exploitation path is definitively closed and non-exploitable.
+* **Deterministic Test Command:**
+```bash
+curl -I -s -o /dev/null -w "HTTP Status: %{http_code}" http://$TARGET_IP/uploads/shell.php
+```
+* **Expected Output upon Successful Remediation:**
+```text
+HTTP Status: 403 (Forbidden) or 404 (Not Found)
+```
+
+**2. Verification for Local Privilege Escalation Mitigation (Sudo SUID Script Symlink Traversal (`/opt/acl.sh` modifying `/etc/sudoers`)):**
+* **Validation Goal:** Enforce strict least-privilege boundary preventing local execution context from elevating to administrative/root privileges.
+* **Deterministic Test Command:**
+```bash
+sudo -l -U target_user 2>&1 | grep -E '(NOPASSWD|ALL)' || echo 'SECURE: No unauthorized sudo privileges'
+```
+* **Expected Output upon Successful Remediation:**
+```text
+SECURE: No unauthorized sudo privileges
+```
+
 ### Immediate Tactical Actions (P1)
 1. **Patch Chamilo LMS (CVE-2023-4220):** Upgrade Chamilo LMS to version 1.11.26 or later immediately. Remove or disable the unused `bigupload.php` component from the production web root.
 2. **Remediate /opt/acl.sh Wildcard Sudo Rights:** Revoke the wildcard sudo authorization in `/etc/sudoers`. Restrict script parameters and implement strict path resolution using `realpath` to prevent symbolic link traversal attacks before invoking `setfacl`.
@@ -398,4 +429,4 @@ cat /root/root.txt
 
 ---
 
-© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for **OffSec** certification preparation (OSCP, OSEP, OSWE) and commercial penetration testing enablement.
+© 2026 **araizcorp** — Technical documentation and security assessment portfolio developed for enterprise penetration testing enablement, vulnerability research, and defensive hardening.
